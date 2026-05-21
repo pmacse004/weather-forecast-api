@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard - Live Weather Data</title>
+    <!-- Favicon to prevent 404 errors -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌤️</text></svg>">
     <style>
         * {
             margin: 0;
@@ -380,6 +382,7 @@
             position: relative;
             overflow: hidden;
             animation: fadeInUp 0.8s ease-out both;
+            cursor: pointer;
         }
 
         .weather-card:nth-child(1) { animation-delay: 0.1s; }
@@ -444,6 +447,287 @@
             font-size: 0.6em;
             opacity: 0.8;
             margin-left: 5px;
+
+        /* Clickable Card Styles */
+        .clickable-card {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .clickable-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .clickable-card:active {
+            transform: translateY(-8px) scale(1.01);
+        }
+
+        .card-click-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.7em;
+            color: rgba(255, 255, 255, 0.6);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .clickable-card:hover .card-click-hint {
+            opacity: 1;
+        }
+
+        .card-click-hint span:first-child {
+            font-size: 1.2em;
+            animation: pointUp 1s ease-in-out infinite;
+        }
+
+        @keyframes pointUp {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+
+        /* Flip Card Container and Animation */
+        .flip-card-container {
+            perspective: 1000px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .flip-card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 200px;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .weather-card.flipped .flip-card {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flip-card-front {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .flip-card-back {
+            background: linear-gradient(135deg, rgba(100, 150, 255, 0.2), rgba(150, 100, 255, 0.2));
+            backdrop-filter: blur(15px);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        /* AI Insights Header on Back */
+        .ai-insights-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .ai-icon {
+            font-size: 2em;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .ai-insights-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Insight Sections */
+        .insight-section {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .insight-label {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .insight-text {
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .status-good {
+            background: rgba(0, 255, 0, 0.3);
+            border: 1px solid rgba(0, 255, 0, 0.5);
+        }
+
+        .status-moderate {
+            background: rgba(255, 200, 0, 0.3);
+            border: 1px solid rgba(255, 200, 0, 0.5);
+        }
+
+        .status-poor {
+            background: rgba(255, 0, 0, 0.3);
+            border: 1px solid rgba(255, 0, 0, 0.5);
+        }
+
+        /* Flip Indicator */
+        .flip-indicator {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.7em;
+            color: rgba(255, 255, 255, 0.6);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .weather-card:hover .flip-indicator {
+            opacity: 1;
+        }
+
+        .flip-indicator span:first-child {
+            font-size: 1.2em;
+            animation: rotate 2s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive adjustments for flip cards */
+        @media (max-width: 768px) {
+            .flip-card {
+                min-height: 180px;
+            }
+            
+            .flip-card-back {
+                font-size: 0.9em;
+            }
+        }
+        }
+
+        /* Detail Info Grid */
+        .detail-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .detail-info-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .detail-info-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .detail-icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .detail-label {
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* Forecast Section */
+        .forecast-section {
+            margin: 25px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .forecast-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .forecast-icon {
+            font-size: 1.3em;
+        }
+
+        .hourly-humidity-chart {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            min-height: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .detail-info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
         }
 
         .aqi-indicator {
@@ -719,6 +1003,702 @@
             }
         }
 
+        /* Flip Card Styles */
+        .flip-card-container {
+            perspective: 1000px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .flip-card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .weather-card.flipped .flip-card {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flip-card-front {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .flip-card-back {
+            background: linear-gradient(135deg,
+                rgba(102, 126, 234, 0.95) 0%,
+                rgba(118, 75, 162, 0.95) 50%,
+                rgba(142, 45, 226, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transform: rotateY(180deg);
+            color: white;
+            overflow-y: auto;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .flip-card-back::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .flip-card-back::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .flip-card-back::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+        }
+
+        .flip-card-back::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .flip-indicator {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.75em;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: pulseGlow 2s ease-in-out infinite;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            pointer-events: none;
+        }
+
+        .flip-card:hover .flip-indicator {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(102, 126, 234, 0.7);
+        }
+
+        /* Interactive Pop-up Card Styles */
+        .weather-card-interactive {
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .weather-card-interactive:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .weather-card-interactive::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .weather-card-interactive:hover::before {
+            opacity: 1;
+        }
+
+        .click-hint {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.75em;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: pulseGlow 2s ease-in-out infinite;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            }
+            50% {
+                transform: scale(1.08);
+                box-shadow: 0 6px 30px rgba(102, 126, 234, 0.7);
+            }
+        }
+
+        /* Detail Icon Button */
+        .detail-icon-btn {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95));
+            backdrop-filter: blur(10px);
+            padding: 10px 18px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            z-index: 10;
+        }
+
+        .detail-icon-btn:hover {
+            transform: translateY(-3px) scale(1.08);
+            box-shadow: 0 8px 35px rgba(102, 126, 234, 0.7);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 1), rgba(118, 75, 162, 1));
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .detail-icon-btn:active {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .icon-finger {
+            font-size: 1.3em;
+            animation: wiggle 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-15deg); }
+            75% { transform: rotate(15deg); }
+        }
+
+        .icon-text {
+            font-size: 0.85em;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Remove old clickable card styles */
+        .clickable-card {
+            cursor: default !important;
+        }
+
+        .card-click-hint {
+            display: none !important;
+        }
+
+        /* Modal Backdrop - Enhanced Glassmorphism */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(12px) saturate(150%);
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            z-index: 999;
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .modal-backdrop.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Modal Container - Enhanced Glassmorphism */
+        .weather-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.7);
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            background: linear-gradient(135deg,
+                rgba(102, 126, 234, 0.95) 0%,
+                rgba(118, 75, 162, 0.95) 50%,
+                rgba(142, 45, 226, 0.95) 100%);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border-radius: 35px;
+            padding: 35px;
+            box-shadow:
+                0 35px 100px rgba(0, 0, 0, 0.6),
+                0 15px 50px rgba(102, 126, 234, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            z-index: 1000;
+            display: none;
+            overflow-y: auto;
+            opacity: 0;
+        }
+
+        .weather-modal.active {
+            display: block;
+            animation: modalPopIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes modalPopIn {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.7) rotateX(20deg);
+                filter: blur(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1) rotateX(0deg);
+                filter: blur(0px);
+            }
+        }
+
+        /* Custom Scrollbar for Modal */
+        .weather-modal::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .weather-modal::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+
+        .weather-modal::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3));
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .weather-modal::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.5));
+            background-clip: padding-box;
+        }
+
+        /* Modal Header */
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            animation: slideInFromTop 0.6s ease-out 0.2s backwards;
+        }
+
+        .modal-title-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .modal-icon {
+            font-size: 3em;
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.3));
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .modal-title-text {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .modal-title {
+            font-size: 2em;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .modal-subtitle {
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Modal Content */
+        .modal-content-section {
+            animation: fadeInUp 0.6s ease-out 0.3s backwards;
+        }
+
+        .modal-main-value {
+            text-align: center;
+            margin: 30px 0;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: scaleIn 0.6s ease-out 0.4s backwards;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-value-number {
+            font-size: 4em;
+            font-weight: bold;
+            color: white;
+            text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.4);
+            line-height: 1;
+        }
+
+        .modal-value-unit {
+            font-size: 0.5em;
+            opacity: 0.9;
+        }
+
+        .modal-value-label {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.95);
+            margin-top: 10px;
+            font-weight: 600;
+
+        /* AI Insights Section in Modal */
+        .ai-insights-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 25px 0 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: slideInFromTop 0.6s ease-out 0.5s backwards;
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ai-icon {
+            font-size: 2.5em;
+            animation: rotate 3s linear infinite;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6));
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .ai-insights-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+            letter-spacing: 1px;
+        }
+
+        .insight-section {
+            margin: 15px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            border-left: 5px solid rgba(255, 255, 255, 0.7);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fadeInUp 0.6s ease-out backwards;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .insight-section:nth-child(2) { animation-delay: 0.6s; }
+        .insight-section:nth-child(3) { animation-delay: 0.7s; }
+        .insight-section:nth-child(4) { animation-delay: 0.8s; }
+
+        .insight-section:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
+            transform: translateX(8px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            border-left-width: 7px;
+        }
+
+        .insight-label {
+            font-size: 1em;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .insight-text {
+            font-size: 1em;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.7;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 0.85em;
+            font-weight: 800;
+            margin-top: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: fadeIn 0.6s ease-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-good {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.5), rgba(56, 142, 60, 0.4));
+            border: 2px solid rgba(76, 175, 80, 0.8);
+            color: #e8f5e9;
+            box-shadow: 0 4px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .status-moderate {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.5), rgba(255, 160, 0, 0.4));
+            border: 2px solid rgba(255, 193, 7, 0.8);
+            color: #fffde7;
+            box-shadow: 0 4px 20px rgba(255, 193, 7, 0.4);
+        }
+
+        .status-poor {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.5), rgba(211, 47, 47, 0.4));
+            border: 2px solid rgba(244, 67, 54, 0.8);
+            color: #ffebee;
+            box-shadow: 0 4px 20px rgba(244, 67, 54, 0.4);
+        }
+
+        /* Responsive Modal */
+        @media (max-width: 768px) {
+            .weather-modal {
+                width: 95%;
+                max-height: 90vh;
+                padding: 25px;
+                border-radius: 25px;
+            }
+
+            .modal-icon {
+                font-size: 2.5em;
+            }
+
+            .modal-title {
+                font-size: 1.6em;
+            }
+
+            .modal-value-number {
+                font-size: 3em;
+            }
+
+            .insight-section {
+                padding: 15px;
+            }
+        }
+        }
+
+        .ai-insights-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            animation: slideInFromTop 0.5s ease-out;
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ai-icon {
+            font-size: 2em;
+            animation: rotate 3s linear infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .ai-insights-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .insight-section {
+            margin: 12px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border-left: 4px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.5s ease-out backwards;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .insight-section:nth-child(2) { animation-delay: 0.1s; }
+        .insight-section:nth-child(3) { animation-delay: 0.2s; }
+        .insight-section:nth-child(4) { animation-delay: 0.3s; }
+
+        .insight-section:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            transform: translateX(5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .insight-label {
+            font-size: 0.9em;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .insight-text {
+            font-size: 0.95em;
+            color: white;
+            line-height: 1.6;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 700;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            animation: fadeIn 0.5s ease-out;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .status-good {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.4), rgba(56, 142, 60, 0.3));
+            border: 1px solid rgba(76, 175, 80, 0.7);
+            color: #c8e6c9;
+            box-shadow: 0 2px 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .status-moderate {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.4), rgba(255, 160, 0, 0.3));
+            border: 1px solid rgba(255, 193, 7, 0.7);
+            color: #fff9c4;
+            box-shadow: 0 2px 10px rgba(255, 193, 7, 0.3);
+        }
+
+        .status-poor {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.4), rgba(211, 47, 47, 0.3));
+            border: 1px solid rgba(244, 67, 54, 0.7);
+            color: #ffcdd2;
+            box-shadow: 0 2px 10px rgba(244, 67, 54, 0.3);
+        }
+
         /* This Week Forecast Styles */
         .forecast-section {
             margin-top: 40px;
@@ -893,8 +1873,8 @@
             }
         }
     </style>
-    <!-- Chart.js Library -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Chart.js Library with defer for better performance -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -945,6 +1925,7 @@
             </div>
 
             <div class="weather-grid">
+                <!-- Humidity Card -->
                 <div class="weather-card">
                     <div class="card-header">
                         <div class="card-icon">💧</div>
@@ -953,8 +1934,13 @@
                     <div class="card-value" id="humidityValue">
                         <span class="card-unit">%</span>
                     </div>
+                    <div class="detail-icon-btn" onclick="openModal('humidity')" title="Click for AI insights">
+                        <span class="icon-finger">👆</span>
+                        <span class="icon-text">Details</span>
+                    </div>
                 </div>
 
+                <!-- Wind Speed Card -->
                 <div class="weather-card">
                     <div class="card-header">
                         <div class="card-icon">💨</div>
@@ -963,8 +1949,13 @@
                     <div class="card-value" id="windValue">
                         <span class="card-unit">m/s</span>
                     </div>
+                    <div class="detail-icon-btn" onclick="openModal('wind')" title="Click for AI insights">
+                        <span class="icon-finger">👆</span>
+                        <span class="icon-text">Details</span>
+                    </div>
                 </div>
 
+                <!-- Rain Chance Card -->
                 <div class="weather-card">
                     <div class="card-header">
                         <div class="card-icon">🌧️</div>
@@ -973,8 +1964,13 @@
                     <div class="card-value" id="rainChanceValue">
                         <span class="card-unit">%</span>
                     </div>
+                    <div class="detail-icon-btn" onclick="openModal('rain')" title="Click for AI insights">
+                        <span class="icon-finger">👆</span>
+                        <span class="icon-text">Details</span>
+                    </div>
                 </div>
 
+                <!-- Sunrise & Sunset Card -->
                 <div class="weather-card">
                     <div class="card-header">
                         <div class="card-icon">🌅</div>
@@ -992,8 +1988,13 @@
                             </div>
                         </div>
                     </div>
+                    <div class="detail-icon-btn" onclick="openModal('sun')" title="Click for AI insights">
+                        <span class="icon-finger">👆</span>
+                        <span class="icon-text">Details</span>
+                    </div>
                 </div>
 
+                <!-- Air Quality Index Card -->
                 <div class="weather-card">
                     <div class="card-header">
                         <div class="card-icon">🌫️</div>
@@ -1040,6 +2041,10 @@
                                 <div class="aqi-scale-range">301-500</div>
                             </div>
                         </div>
+                    </div>
+                    <div class="detail-icon-btn" onclick="openModal('aqi')" title="Click for AI insights">
+                        <span class="icon-finger">👆</span>
+                        <span class="icon-text">Details</span>
                     </div>
                 </div>
 
@@ -1111,8 +2116,14 @@
             showLoading();
 
             try {
-                // Fetch current weather
-                const weatherResponse = await fetch(`/weather/${encodeURIComponent(city)}`);
+                // Fetch current weather with timeout
+                const weatherController = new AbortController();
+                const weatherTimeout = setTimeout(() => weatherController.abort(), 10000);
+                
+                const weatherResponse = await fetch(`/weather/${encodeURIComponent(city)}`, {
+                    signal: weatherController.signal
+                });
+                clearTimeout(weatherTimeout);
                 
                 if (!weatherResponse.ok) {
                     throw new Error('City not found or API error');
@@ -1121,23 +2132,31 @@
                 const weatherData = await weatherResponse.json();
                 displayWeather(weatherData);
 
-                // Fetch 24-hour hourly forecast
-                const hourlyResponse = await fetch(`/weather/hourly/${encodeURIComponent(city)}`);
-                
-                if (hourlyResponse.ok) {
-                    const hourlyData = await hourlyResponse.json();
-                    displayHourlyForecast(hourlyData);
-                }
+                // Fetch 24-hour hourly forecast (non-blocking)
+                fetch(`/weather/hourly/${encodeURIComponent(city)}`)
+                    .then(response => {
+                        if (response.ok) return response.json();
+                        throw new Error('Hourly data unavailable');
+                    })
+                    .then(hourlyData => displayHourlyForecast(hourlyData))
+                    .catch(err => console.warn('Hourly forecast not available:', err));
 
-                // Fetch 7-day forecast
-                const forecastResponse = await fetch(`/weather/forecast/${encodeURIComponent(city)}`);
-                
-                if (forecastResponse.ok) {
-                    const forecastData = await forecastResponse.json();
-                    displayForecast(forecastData);
-                }
+                // Fetch 7-day forecast (non-blocking)
+                fetch(`/weather/forecast/${encodeURIComponent(city)}`)
+                    .then(response => {
+                        if (response.ok) return response.json();
+                        throw new Error('Forecast data unavailable');
+                    })
+                    .then(forecastData => displayForecast(forecastData))
+                    .catch(err => console.warn('7-day forecast not available:', err));
+                    
             } catch (error) {
-                showError('Unable to fetch weather data. Please check the city name and try again.');
+                if (error.name === 'AbortError') {
+                    showError('Request timeout. Please check your connection and try again.');
+                } else {
+                    showError('Unable to fetch weather data. Please check the city name and try again.');
+                }
+                console.error('Weather fetch error:', error);
             } finally {
                 hideLoading();
             }
@@ -1186,6 +2205,8 @@
             }
 
             document.getElementById('weatherContainer').style.display = 'block';
+            // Generate AI insights for flip cards
+            generateAIInsights(data);
         }
 
         function displayWeatherSummary(data) {
@@ -1337,10 +2358,21 @@
         }
 
         // Global variable to store chart instance
+        let humidityForecastChart = null;
+        let cachedHourlyData = null;
         let hourlyChart = null;
 
         function displayHourlyForecast(data) {
             if (!data.hourlyForecasts || data.hourlyForecasts.length === 0) {
+                return;
+            }
+
+            // Cache the hourly data for use in modals
+            cachedHourlyData = data;
+
+            // Check if Chart.js is available
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js not loaded, cannot display hourly forecast');
                 return;
             }
 
@@ -1355,9 +2387,17 @@
                 hourlyChart.destroy();
             }
 
-            // Create new chart
-            const ctx = document.getElementById('hourlyChart').getContext('2d');
-            hourlyChart = new Chart(ctx, {
+            // Get canvas element
+            const canvas = document.getElementById('hourlyChart');
+            if (!canvas) {
+                console.error('Hourly chart canvas not found');
+                return;
+            }
+
+            try {
+                // Create new chart
+                const ctx = canvas.getContext('2d');
+                hourlyChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
@@ -1531,7 +2571,10 @@
                 }
             });
 
-            document.getElementById('hourlySection').style.display = 'block';
+                document.getElementById('hourlySection').style.display = 'block';
+            } catch (error) {
+                console.error('Error creating hourly chart:', error);
+            }
         }
 
         function hideHourlySection() {
@@ -1539,6 +2582,141 @@
             if (hourlyChart) {
                 hourlyChart.destroy();
                 hourlyChart = null;
+            }
+        }
+
+        function createHumidityForecastChart() {
+            if (!cachedHourlyData || !cachedHourlyData.hourlyForecasts) {
+                console.warn('No hourly data available for humidity chart');
+                return;
+            }
+
+            // Check if Chart.js is available
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js not loaded, cannot display humidity forecast');
+                return;
+            }
+
+            // Extract humidity data
+            const labels = cachedHourlyData.hourlyForecasts.slice(0, 12).map(hour => hour.time);
+            const humidityData = cachedHourlyData.hourlyForecasts.slice(0, 12).map(hour => hour.humidity || 0);
+
+            // Destroy existing chart if it exists
+            if (humidityForecastChart) {
+                humidityForecastChart.destroy();
+            }
+
+            // Get canvas element
+            const canvas = document.getElementById('humidityForecastChart');
+            if (!canvas) {
+                console.error('Humidity forecast chart canvas not found');
+                return;
+            }
+
+            try {
+                // Create new chart
+                const ctx = canvas.getContext('2d');
+                humidityForecastChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Humidity (%)',
+                            data: humidityData,
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 5,
+                            pointHoverRadius: 8,
+                            pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                labels: {
+                                    color: 'white',
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    },
+                                    padding: 15
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                titleColor: 'white',
+                                bodyColor: 'white',
+                                borderColor: 'rgba(255, 255, 255, 0.3)',
+                                borderWidth: 1,
+                                padding: 12,
+                                displayColors: true,
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.parsed.y + '%';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)',
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    color: 'white',
+                                    font: {
+                                        size: 11,
+                                        weight: 'bold'
+                                    },
+                                    maxRotation: 45,
+                                    minRotation: 45
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)',
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    color: 'white',
+                                    font: {
+                                        size: 12,
+                                        weight: 'bold'
+                                    },
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Humidity (%)',
+                                    color: 'white',
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error creating humidity forecast chart:', error);
             }
         }
 
@@ -1566,6 +2744,271 @@
             if (event.key === 'Enter') {
                 getWeather();
             }
+        }
+
+        // Flip Card Animation Function
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        // Generate AI-Powered Weather Insights
+        function generateAIInsights(data) {
+            const temp = data.temperature;
+            const humidity = data.humidity;
+            const windSpeed = data.windSpeed;
+            const rainChance = data.chanceOfRain;
+            const aqi = data.aqi || 50;
+            const sunrise = data.sunrise;
+            const sunset = data.sunset;
+
+            // Humidity Insights
+            generateHumidityInsights(humidity, temp);
+
+            // Wind Speed Insights
+            generateWindInsights(windSpeed, temp);
+
+            // Rain Chance Insights
+            generateRainInsights(rainChance, temp);
+
+            // Sunrise & Sunset Insights
+            generateSunInsights(sunrise, sunset);
+
+            // AQI Insights
+            generateAQIInsights(aqi);
+        }
+
+        function generateHumidityInsights(humidity, temp) {
+            let analysis = '';
+            let health = '';
+            let comfort = '';
+            let indoor = '';
+            let outdoor = '';
+            let statusClass = '';
+
+            if (humidity < 30) {
+                analysis = `Low humidity at ${humidity}%. The air is quite dry, which can cause discomfort and static electricity.`;
+                health = '💧 Stay hydrated! Drink plenty of water. Use a humidifier indoors. Apply moisturizer to prevent dry skin.';
+                comfort = '🏠 Indoor plants can help increase humidity. Keep a water bowl near heaters. Use lip balm frequently.';
+                indoor = '🏠 Use a humidifier to add moisture. Place water bowls near radiators. Keep houseplants to naturally increase humidity. Avoid overheating rooms.';
+                outdoor = '🌳 Wear sunscreen and lip balm. Carry a water bottle. Limit time in direct sun. Moisturize exposed skin frequently.';
+                statusClass = 'status-moderate';
+            } else if (humidity >= 30 && humidity <= 60) {
+                analysis = `Optimal humidity at ${humidity}%. Perfect conditions for comfort and health. The air quality feels just right.`;
+                health = '✅ Ideal conditions! No special precautions needed. Great for outdoor activities and exercise.';
+                comfort = '😊 Perfect comfort level. Enjoy your day without humidity concerns. Great for all activities.';
+                indoor = '✅ Perfect indoor conditions! No adjustments needed. Maintain current ventilation. Ideal for work and relaxation.';
+                outdoor = '🌞 Excellent outdoor conditions! Perfect for exercise, sports, and leisure activities. Enjoy the comfortable weather!';
+                statusClass = 'status-good';
+            } else if (humidity > 60 && humidity <= 80) {
+                analysis = `High humidity at ${humidity}%. The air feels heavy and muggy. You may experience discomfort.`;
+                health = '🌡️ Stay cool and hydrated. Avoid strenuous outdoor activities. Use air conditioning if available.';
+                comfort = '👕 Wear light, breathable fabrics. Take frequent breaks in shade. Use dehumidifiers indoors.';
+                indoor = '❄️ Use air conditioning or dehumidifier. Improve ventilation. Avoid cooking that adds moisture. Use exhaust fans.';
+                outdoor = '🌳 Seek shade frequently. Wear moisture-wicking clothing. Take breaks in air-conditioned spaces. Avoid peak heat hours.';
+                statusClass = 'status-moderate';
+            } else {
+                analysis = `Very high humidity at ${humidity}%. Extremely uncomfortable conditions. Heat index feels much higher.`;
+                health = '⚠️ High risk of heat exhaustion! Stay indoors. Drink water constantly. Avoid physical exertion.';
+                comfort = '🏠 Stay in air-conditioned spaces. Wear minimal, loose clothing. Take cool showers frequently.';
+                indoor = '🏠 Stay indoors with AC. Use dehumidifiers. Avoid heat-generating activities. Keep curtains closed during day.';
+                outdoor = '⚠️ Minimize outdoor time! High heat stress risk. If outside, stay in shade, hydrate constantly, watch for heat illness signs.';
+                statusClass = 'status-poor';
+            }
+
+            document.getElementById('humidityInsight').innerHTML =
+                `${analysis}<span class="status-badge ${statusClass}">Humidity: ${humidity}%</span>`;
+            document.getElementById('humidityHealth').textContent = health;
+            document.getElementById('humidityComfort').textContent = comfort;
+            
+            // Update modal-specific elements if they exist
+            if (document.getElementById('humidityIndoor')) {
+                document.getElementById('humidityIndoor').textContent = indoor;
+            }
+            if (document.getElementById('humidityOutdoor')) {
+                document.getElementById('humidityOutdoor').textContent = outdoor;
+            }
+        }
+
+        function generateWindInsights(windSpeed, temp) {
+            let analysis = '';
+            let travel = '';
+            let safety = '';
+            let statusClass = '';
+
+            if (windSpeed < 5) {
+                analysis = `Calm winds at ${windSpeed.toFixed(1)} m/s. Very light breeze, almost still air. Perfect for outdoor activities.`;
+                travel = '🚗 Excellent driving conditions. Safe for cycling and motorcycles. No wind-related concerns.';
+                safety = '✅ All outdoor activities are safe. Great for picnics, sports, and photography. Enjoy the calm weather!';
+                statusClass = 'status-good';
+            } else if (windSpeed >= 5 && windSpeed < 10) {
+                analysis = `Moderate winds at ${windSpeed.toFixed(1)} m/s. Gentle to moderate breeze. Comfortable conditions overall.`;
+                travel = '🚴 Good for most travel. Cyclists may feel slight resistance. Drive normally, no special precautions.';
+                safety = '👍 Safe for all activities. Kites fly well. Good for sailing and water sports. Enjoy outdoor time!';
+                statusClass = 'status-good';
+            } else if (windSpeed >= 10 && windSpeed < 15) {
+                analysis = `Strong winds at ${windSpeed.toFixed(1)} m/s. Fresh to strong breeze. You'll definitely feel the wind.`;
+                travel = '🚗 Drive carefully, especially high-profile vehicles. Cyclists should be cautious. Secure loose items.';
+                safety = '⚠️ Avoid umbrellas (may invert). Secure outdoor furniture. Be careful near trees and structures.';
+                statusClass = 'status-moderate';
+            } else {
+                analysis = `Very strong winds at ${windSpeed.toFixed(1)} m/s. Gale force winds! Potentially dangerous conditions.`;
+                travel = '🚫 Avoid unnecessary travel. High-sided vehicles at risk. Motorcycles and bicycles dangerous.';
+                safety = '⛔ Stay indoors if possible! Risk of falling branches. Secure all outdoor items. Avoid coastal areas.';
+                statusClass = 'status-poor';
+            }
+
+            document.getElementById('windInsight').innerHTML =
+                `${analysis}<span class="status-badge ${statusClass}">Wind: ${windSpeed.toFixed(1)} m/s</span>`;
+            document.getElementById('windTravel').textContent = travel;
+            document.getElementById('windSafety').textContent = safety;
+        }
+
+        function generateRainInsights(rainChance, temp) {
+            let analysis = '';
+            let prep = '';
+            let activity = '';
+            let statusClass = '';
+
+            if (rainChance < 20) {
+                analysis = `Low rain probability at ${rainChance}%. Clear skies expected. Very unlikely to rain today.`;
+                prep = '☀️ No rain gear needed! Perfect day for outdoor plans. Sunscreen recommended instead.';
+                activity = '🏃 Ideal for all outdoor activities! Plan that picnic, hike, or sports event. Great day ahead!';
+                statusClass = 'status-good';
+            } else if (rainChance >= 20 && rainChance < 50) {
+                analysis = `Moderate rain chance at ${rainChance}%. Possible light showers. Keep an eye on the sky.`;
+                prep = '☂️ Carry a compact umbrella just in case. Light rain jacket recommended. Check forecast updates.';
+                activity = '🚶 Outdoor activities okay with backup plan. Indoor alternatives ready. Flexible scheduling advised.';
+                statusClass = 'status-moderate';
+            } else if (rainChance >= 50 && rainChance < 80) {
+                analysis = `High rain probability at ${rainChance}%. Rain is likely today. Expect wet conditions.`;
+                prep = '🌧️ Umbrella essential! Waterproof jacket needed. Wear water-resistant footwear. Protect electronics.';
+                activity = '🏠 Consider indoor activities. If going out, plan for rain. Museums, malls, indoor sports recommended.';
+                statusClass = 'status-moderate';
+            } else {
+                analysis = `Very high rain chance at ${rainChance}%. Heavy rain expected! Stay prepared for wet weather.`;
+                prep = '⛈️ Full rain gear required! Waterproof everything. Avoid leather shoes. Keep valuables dry.';
+                activity = '🏡 Best to stay indoors. Postpone outdoor plans. Perfect day for indoor hobbies, movies, or reading.';
+                statusClass = 'status-poor';
+            }
+
+            document.getElementById('rainInsight').innerHTML =
+                `${analysis}<span class="status-badge ${statusClass}">Rain: ${rainChance}%</span>`;
+            document.getElementById('rainPrep').textContent = prep;
+            document.getElementById('rainActivity').textContent = activity;
+        }
+
+        function generateSunInsights(sunrise, sunset) {
+            let daylight = '';
+            let goldenHour = '';
+            let sleepAdvice = '';
+
+            if (sunrise && sunset) {
+                // Calculate daylight duration
+                const sunriseTime = parseTime(sunrise);
+                const sunsetTime = parseTime(sunset);
+                
+                if (sunriseTime && sunsetTime) {
+                    let daylightMinutes = (sunsetTime - sunriseTime) / (1000 * 60);
+                    const hours = Math.floor(daylightMinutes / 60);
+                    const minutes = Math.round(daylightMinutes % 60);
+                    
+                    daylight = `☀️ Today offers ${hours}h ${minutes}m of daylight. `;
+                    
+                    if (hours > 13) {
+                        daylight += 'Long summer day! Plenty of time for outdoor activities and vitamin D absorption.';
+                    } else if (hours > 11) {
+                        daylight += 'Good daylight hours. Balanced day-night cycle for optimal circadian rhythm.';
+                    } else {
+                        daylight += 'Shorter day. Make the most of daylight hours. Consider vitamin D supplements.';
+                    }
+
+                    // Golden hour calculations
+                    const goldenHourMorning = new Date(sunriseTime.getTime() + 60 * 60 * 1000);
+                    const goldenHourEvening = new Date(sunsetTime.getTime() - 60 * 60 * 1000);
+                    
+                    goldenHour = `📸 Golden Hour: ${formatTime(goldenHourMorning)} & ${formatTime(goldenHourEvening)}. `;
+                    goldenHour += 'Perfect lighting for photography! Soft, warm tones create stunning photos. Ideal for portraits and landscapes.';
+
+                    // Sleep recommendations
+                    const sunsetHour = sunsetTime.getHours();
+                    sleepAdvice = `🌙 Optimal sleep time: 2-3 hours after sunset (around ${formatTime(new Date(sunsetTime.getTime() + 2.5 * 60 * 60 * 1000))}). `;
+                    sleepAdvice += 'Align with natural circadian rhythm. Reduce screen time 1 hour before bed. Keep bedroom dark and cool.';
+                } else {
+                    daylight = '☀️ Sunrise at ' + sunrise + ', Sunset at ' + sunset + '. Enjoy the natural light cycle!';
+                    goldenHour = '📸 Best photography times are around sunrise and sunset. Capture the golden hour magic!';
+                    sleepAdvice = '🌙 Maintain consistent sleep schedule. Aim for 7-9 hours. Create a relaxing bedtime routine.';
+                }
+            } else {
+                daylight = '☀️ Daylight information unavailable. Check local sunrise/sunset times for planning.';
+                goldenHour = '📸 Golden hour typically occurs 1 hour after sunrise and 1 hour before sunset.';
+                sleepAdvice = '🌙 Maintain regular sleep schedule. 7-9 hours recommended. Avoid screens before bed.';
+            }
+
+            document.getElementById('daylightInsight').textContent = daylight;
+            document.getElementById('goldenHour').textContent = goldenHour;
+            document.getElementById('sleepAdvice').textContent = sleepAdvice;
+        }
+
+        function generateAQIInsights(aqi) {
+            let analysis = '';
+            let health = '';
+            let protection = '';
+            let statusClass = '';
+
+            if (aqi <= 50) {
+                analysis = `Excellent air quality (AQI: ${aqi}). Air pollution poses little or no risk. Perfect conditions!`;
+                health = '✅ Safe for everyone! Ideal for outdoor exercise and activities. No health concerns. Breathe freely!';
+                protection = '😊 No protection needed. Enjoy outdoor time. Great for jogging, cycling, and sports. Fresh air!';
+                statusClass = 'status-good';
+            } else if (aqi <= 100) {
+                analysis = `Moderate air quality (AQI: ${aqi}). Acceptable for most people. Sensitive individuals should be cautious.`;
+                health = '👍 Generally safe for most people. Sensitive groups may experience minor irritation. Monitor symptoms.';
+                protection = '🌬️ Sensitive individuals consider limiting prolonged outdoor exertion. Most people can enjoy normal activities.';
+                statusClass = 'status-moderate';
+            } else if (aqi <= 150) {
+                analysis = `Unhealthy for sensitive groups (AQI: ${aqi}). Children, elderly, and those with respiratory issues should be careful.`;
+                health = '⚠️ Sensitive groups: reduce prolonged outdoor activities. May experience breathing discomfort. Stay alert.';
+                protection = '😷 Sensitive individuals should wear masks outdoors. Limit outdoor time. Keep windows closed. Use air purifiers.';
+                statusClass = 'status-moderate';
+            } else if (aqi <= 200) {
+                analysis = `Unhealthy air quality (AQI: ${aqi}). Everyone may experience health effects. Sensitive groups at higher risk.`;
+                health = '🏥 Everyone should reduce outdoor exertion. Sensitive groups avoid outdoor activities. Health effects likely.';
+                protection = '😷 Wear N95 masks outdoors. Stay indoors when possible. Use air purifiers. Close windows. Avoid exercise outside.';
+                statusClass = 'status-poor';
+            } else if (aqi <= 300) {
+                analysis = `Very unhealthy air quality (AQI: ${aqi})! Health alert! Everyone may experience serious health effects.`;
+                health = '🚨 Everyone should avoid outdoor activities! Serious health effects for all. Stay indoors. Seek medical help if needed.';
+                protection = '⛔ Essential: N95/N99 masks if you must go out. Keep all windows closed. Run air purifiers. Minimize outdoor exposure.';
+                statusClass = 'status-poor';
+            } else {
+                analysis = `Hazardous air quality (AQI: ${aqi})! Emergency conditions! Entire population at risk of serious health effects.`;
+                health = '🆘 HEALTH EMERGENCY! Stay indoors! Avoid all outdoor activities. Seek medical attention for any symptoms. High risk!';
+                protection = '☣️ DO NOT go outside unless absolutely necessary! Seal windows. Use high-grade air purifiers. Emergency measures required!';
+                statusClass = 'status-poor';
+            }
+
+            document.getElementById('aqiInsight').innerHTML =
+                `${analysis}<span class="status-badge ${statusClass}">AQI: ${aqi}</span>`;
+            document.getElementById('aqiHealth').textContent = health;
+            document.getElementById('aqiProtection').textContent = protection;
+        }
+
+        // Helper function to parse time string (HH:MM format)
+        function parseTime(timeStr) {
+            if (!timeStr || timeStr === 'N/A') return null;
+            const parts = timeStr.split(':');
+            if (parts.length !== 2) return null;
+            const now = new Date();
+            now.setHours(parseInt(parts[0]), parseInt(parts[1]), 0, 0);
+            return now;
+        }
+
+        // Helper function to format time
+        function formatTime(date) {
+            if (!date) return 'N/A';
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            return `${hours}:${minutes}`;
         }
 
         // Stock Market Data and Mini Graph Generation
@@ -1728,15 +3171,492 @@
             }
         }
 
-        window.onload = function() {
-            document.getElementById('cityInput').value = 'Delhi';
-            getWeather();
+        // Modal Control Functions
+        function openModal(type) {
+            const modalId = type + 'Modal';
+            const modal = document.getElementById(modalId);
+            const backdrop = document.getElementById('modalBackdrop');
+            
+            if (modal && backdrop) {
+                // Populate AI insights when opening modal
+                populateModalAIInsights(type);
+                
+                // Show modal with animation
+                backdrop.classList.add('active');
+                setTimeout(() => {
+                    modal.classList.add('active');
+                }, 50);
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal() {
+            const modals = document.querySelectorAll('.weather-modal');
+            const backdrop = document.getElementById('modalBackdrop');
+            
+            modals.forEach(modal => modal.classList.remove('active'));
+            backdrop.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Populate AI Insights in Modals
+        function populateModalAIInsights(type) {
+            switch(type) {
+                case 'humidity':
+                    populateHumidityInsights();
+                    break;
+                case 'wind':
+                    populateWindInsights();
+                    break;
+                case 'rain':
+                    populateRainInsights();
+                    break;
+                case 'sun':
+                    populateSunInsights();
+                    break;
+                case 'aqi':
+                    populateAQIInsights();
+                    break;
+            }
+        }
+
+        function populateHumidityInsights() {
+            const humidityVal = parseFloat(document.getElementById('humidityValue').textContent.replace('%', '').trim());
+            const tempText = document.getElementById('mainTemp').textContent.replace('°C', '').trim();
+            const currentTemp = parseFloat(tempText);
+            
+            // Humidity Analysis
+            let analysis = '';
+            if (humidityVal < 30) {
+                analysis = '🌵 Very dry conditions detected. The air lacks moisture, which may cause discomfort.';
+            } else if (humidityVal <= 60) {
+                analysis = '✅ Optimal humidity levels! The air moisture is in the comfortable range for most activities.';
+            } else if (humidityVal <= 80) {
+                analysis = '💧 High humidity detected. The air feels heavy and may cause discomfort during physical activities.';
+            } else {
+                analysis = '🌊 Very high humidity! The air is saturated with moisture, making it feel much warmer than actual temperature.';
+            }
+            document.getElementById('humidityInsight').textContent = analysis;
+            
+            // Health Tips
+            let health = '';
+            if (humidityVal < 30) {
+                health = '💊 Stay hydrated! Drink plenty of water. Use moisturizer for skin. Consider using a humidifier indoors.';
+            } else if (humidityVal <= 60) {
+                health = '😊 Perfect conditions for outdoor activities! Maintain regular hydration and enjoy the comfortable weather.';
+            } else {
+                health = '⚠️ High humidity can strain cardiovascular system. Take frequent breaks, stay in shade, and avoid strenuous activities during peak hours.';
+            }
+            document.getElementById('humidityHealth').textContent = health;
+            
+            // Comfort Advice
+            let comfort = '';
+            if (humidityVal < 30) {
+                comfort = '👕 Wear breathable fabrics. Keep lip balm handy. Indoor plants can help add moisture to the air.';
+            } else if (humidityVal <= 60) {
+                comfort = '👍 Comfortable conditions! Light, breathable clothing recommended. Perfect for all types of activities.';
+            } else {
+                comfort = '🌬️ Wear light, moisture-wicking fabrics. Use fans or AC. Avoid tight clothing. Take cool showers to feel refreshed.';
+            }
+            document.getElementById('humidityComfort').textContent = comfort;
+        }
+
+        function populateWindInsights() {
+            const windVal = parseFloat(document.getElementById('windValue').textContent.replace('m/s', '').trim());
+            
+            // Wind Analysis
+            let analysis = '';
+            if (windVal < 2) {
+                analysis = '🍃 Calm conditions with light air movement. Perfect for outdoor activities and photography.';
+            } else if (windVal < 6) {
+                analysis = '💨 Light to moderate breeze. Comfortable for most outdoor activities. Leaves rustle gently.';
+            } else if (windVal < 11) {
+                analysis = '🌬️ Fresh breeze detected. Small branches move. Umbrellas may be difficult to use.';
+            } else if (windVal < 17) {
+                analysis = '⚠️ Strong winds! Large branches in motion. Walking against wind is difficult. Secure loose objects.';
+            } else {
+                analysis = '🚨 Very strong winds! Whole trees in motion. Considerable structural damage possible. Stay indoors!';
+            }
+            document.getElementById('windInsight').textContent = analysis;
+            
+            // Travel Suggestions
+            let travel = '';
+            if (windVal < 6) {
+                travel = '🚗 Excellent conditions for all types of travel. Smooth driving conditions expected.';
+            } else if (windVal < 11) {
+                travel = '🚙 Good for travel but be cautious with high-profile vehicles. Motorcyclists should be alert.';
+            } else if (windVal < 17) {
+                travel = '⚠️ Difficult driving conditions. High-profile vehicles at risk. Avoid unnecessary travel.';
+            } else {
+                travel = '🚨 Dangerous travel conditions! Avoid all non-essential travel. Risk of accidents is very high.';
+            }
+            document.getElementById('windTravel').textContent = travel;
+            
+            // Safety Alerts
+            let safety = '';
+            if (windVal < 6) {
+                safety = '✅ Safe conditions for all outdoor activities. No special precautions needed.';
+            } else if (windVal < 11) {
+                safety = '⚠️ Secure loose objects outdoors. Be careful with umbrellas. Watch for falling branches.';
+            } else if (windVal < 17) {
+                safety = '🚨 Stay away from trees and tall structures. Secure all outdoor items. Avoid open areas.';
+            } else {
+                safety = '⛔ DANGER! Stay indoors. Risk of flying debris. Power outages possible. Emergency services may be limited.';
+            }
+            document.getElementById('windSafety').textContent = safety;
+        }
+
+        function populateRainInsights() {
+            const rainVal = parseFloat(document.getElementById('rainChanceValue').textContent.replace('%', '').trim());
+            
+            // Rain Forecast
+            let forecast = '';
+            if (rainVal < 20) {
+                forecast = '☀️ Very low chance of rain. Clear skies expected. Perfect day for outdoor plans!';
+            } else if (rainVal < 50) {
+                forecast = '🌤️ Slight chance of rain. Mostly dry conditions expected. Keep an umbrella handy just in case.';
+            } else if (rainVal < 80) {
+                forecast = '🌧️ Moderate to high chance of rain. Wet conditions likely. Plan accordingly for indoor alternatives.';
+            } else {
+                forecast = '⛈️ Very high chance of rain! Heavy precipitation expected. Outdoor activities not recommended.';
+            }
+            document.getElementById('rainInsight').textContent = forecast;
+            
+            // Preparation Tips
+            let prep = '';
+            if (rainVal < 20) {
+                prep = '😎 No rain gear needed! Enjoy the sunshine. Apply sunscreen if spending time outdoors.';
+            } else if (rainVal < 50) {
+                prep = '☂️ Carry a compact umbrella or light rain jacket. Better safe than sorry!';
+            } else if (rainVal < 80) {
+                prep = '🌂 Bring waterproof jacket and sturdy umbrella. Wear water-resistant footwear. Protect electronics.';
+            } else {
+                prep = '🌊 Full rain gear essential! Waterproof everything. Consider postponing outdoor plans. Check for flood warnings.';
+            }
+            document.getElementById('rainPrep').textContent = prep;
+            
+            // Activity Recommendations
+            let activity = '';
+            if (rainVal < 20) {
+                activity = '🏃 Perfect for: Hiking, picnics, sports, photography, gardening, beach activities, outdoor events.';
+            } else if (rainVal < 50) {
+                activity = '🚶 Good for: Short walks, covered outdoor activities, shopping, sightseeing with backup plans.';
+            } else if (rainVal < 80) {
+                activity = '🏠 Better indoors: Museums, shopping malls, cinemas, indoor sports, cafes, libraries.';
+            } else {
+                activity = '📚 Stay indoors: Reading, movies, board games, cooking, online activities, home projects.';
+            }
+            document.getElementById('rainActivity').textContent = activity;
+        }
+
+        function populateSunInsights() {
+            const sunriseTime = document.getElementById('sunriseTime').textContent;
+            const sunsetTime = document.getElementById('sunsetTime').textContent;
+            
+            // Calculate daylight duration (simplified)
+            const sunrise = sunriseTime.split(':');
+            const sunset = sunsetTime.split(':');
+            const sunriseMinutes = parseInt(sunrise[0]) * 60 + parseInt(sunrise[1]);
+            const sunsetMinutes = parseInt(sunset[0]) * 60 + parseInt(sunset[1]);
+            const daylightMinutes = sunsetMinutes - sunriseMinutes;
+            const hours = Math.floor(daylightMinutes / 60);
+            const minutes = daylightMinutes % 60;
+            
+            document.getElementById('daylightInsight').textContent =
+                `☀️ Today you'll have ${hours} hours and ${minutes} minutes of daylight. ${hours > 12 ? 'Long summer day!' : hours < 10 ? 'Short winter day.' : 'Moderate day length.'}`;
+            
+            // Golden Hour
+            const goldenHourMorning = new Date();
+            goldenHourMorning.setHours(parseInt(sunrise[0]), parseInt(sunrise[1]) + 30);
+            const goldenHourEvening = new Date();
+            goldenHourEvening.setHours(parseInt(sunset[0]) - 1, parseInt(sunset[1]));
+            
+            document.getElementById('goldenHour').textContent =
+                `📸 Best photography times: Morning golden hour around ${goldenHourMorning.getHours()}:${String(goldenHourMorning.getMinutes()).padStart(2, '0')}, Evening golden hour around ${goldenHourEvening.getHours()}:${String(goldenHourEvening.getMinutes()).padStart(2, '0')}. Soft, warm lighting perfect for photos!`;
+            
+            // Sleep Recommendations
+            const optimalSleep = new Date();
+            optimalSleep.setHours(parseInt(sunset[0]) + 3, parseInt(sunset[1]));
+            
+            document.getElementById('sleepAdvice').textContent =
+                `🌙 For optimal sleep aligned with natural light cycles, consider sleeping around ${optimalSleep.getHours()}:${String(optimalSleep.getMinutes()).padStart(2, '0')}. Wake up naturally with sunrise for better circadian rhythm!`;
+        }
+
+        function populateAQIInsights() {
+            const aqiVal = parseInt(document.getElementById('aqiValue').textContent);
+            const aqiLevel = document.getElementById('aqiLevel').textContent;
+            
+            // AQI Analysis
+            let analysis = '';
+            if (aqiVal <= 50) {
+                analysis = '🌟 Excellent air quality! Air pollution poses little or no risk. Perfect conditions for all outdoor activities.';
+            } else if (aqiVal <= 100) {
+                analysis = '😊 Good air quality. Acceptable for most people. Unusually sensitive individuals should consider limiting prolonged outdoor exertion.';
+            } else if (aqiVal <= 150) {
+                analysis = '⚠️ Moderate air quality. Sensitive groups (children, elderly, respiratory issues) may experience health effects. General public less likely to be affected.';
+            } else if (aqiVal <= 200) {
+                analysis = '🚨 Unhealthy air quality! Everyone may begin to experience health effects. Sensitive groups may experience more serious effects.';
+            } else if (aqiVal <= 300) {
+                analysis = '☢️ Very unhealthy! Health alert - everyone may experience serious health effects. Avoid outdoor activities.';
+            } else {
+                analysis = '⛔ HAZARDOUS! Health warning of emergency conditions. Everyone is likely to be affected. Stay indoors with air purification!';
+            }
+            document.getElementById('aqiInsight').textContent = analysis;
+            
+            // Health Recommendations
+            let health = '';
+            if (aqiVal <= 50) {
+                health = '💪 Perfect for all outdoor activities! No health precautions needed. Enjoy fresh air and exercise.';
+            } else if (aqiVal <= 100) {
+                health = '👍 Generally safe. Sensitive individuals should watch for symptoms. Stay hydrated during outdoor activities.';
+            } else if (aqiVal <= 150) {
+                health = '⚠️ Limit prolonged outdoor exertion. Children and people with respiratory issues should reduce outdoor activities.';
+            } else if (aqiVal <= 200) {
+                health = '🏥 Avoid prolonged outdoor activities. Everyone should reduce exertion. Keep windows closed. Use air purifiers indoors.';
+            } else if (aqiVal <= 300) {
+                health = '🚨 Avoid all outdoor activities! Stay indoors with windows closed. Use N95 masks if you must go outside. Seek medical attention if experiencing symptoms.';
+            } else {
+                health = '⛔ EMERGENCY! Remain indoors. Seal windows and doors. Use HEPA air purifiers. Evacuate if possible. Seek immediate medical help for any symptoms.';
+            }
+            document.getElementById('aqiHealth').textContent = health;
+            
+            // Protection Advice
+            let protection = '';
+            if (aqiVal <= 50) {
+                protection = '✅ No special protection needed. Enjoy outdoor activities freely!';
+            } else if (aqiVal <= 100) {
+                protection = '😷 Sensitive individuals may want to wear masks during prolonged outdoor activities.';
+            } else if (aqiVal <= 150) {
+                protection = '😷 Consider wearing N95 masks outdoors. Keep windows closed. Use air purifiers indoors.';
+            } else if (aqiVal <= 200) {
+                protection = '😷 N95 masks essential outdoors! Close all windows. Run air purifiers continuously. Avoid cooking that produces smoke.';
+            } else if (aqiVal <= 300) {
+                protection = '😷 N95 or N99 masks mandatory! Seal home. Multiple air purifiers. Wet towels under doors. Avoid all outdoor exposure.';
+            } else {
+                protection = '⛔ Maximum protection required! Gas masks if available. Complete home sealing. Industrial air purifiers. Consider evacuation to cleaner areas.';
+            }
+            document.getElementById('aqiProtection').textContent = protection;
+        }
+
+        // Optimized initialization with Chart.js dependency check
+        function initializeApp() {
+            // Check if Chart.js is loaded
+            if (typeof Chart === 'undefined') {
+                console.warn('Chart.js not loaded yet, retrying...');
+                setTimeout(initializeApp, 100);
+                return;
+            }
+            
+            // Initialize calendar and stock market first (non-blocking)
             generateCalendar();
             generateStockMarket();
             
+            // Set default city and fetch weather
+            document.getElementById('cityInput').value = 'Delhi';
+            getWeather();
+            
             // Update stock market every 5 seconds for live feel
             setInterval(generateStockMarket, 5000);
-        };
+        }
+
+        // Use DOMContentLoaded for faster initial render
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
     </script>
+
+    <!-- Modal Backdrop -->
+    <div class="modal-backdrop" id="modalBackdrop" onclick="closeModal()"></div>
+
+    <!-- Humidity Modal -->
+    <div class="weather-modal" id="humidityModal">
+        <div class="modal-header">
+            <div class="modal-title-section">
+                <div class="modal-icon">💧</div>
+                <div class="modal-title-text">
+                    <div class="modal-title">Humidity Details</div>
+                    <div class="modal-subtitle">Complete Moisture Analysis with AI Insights</div>
+                </div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        
+        <div class="modal-content-section">
+            <div class="ai-insights-header">
+                <div class="ai-icon">🤖</div>
+                <div class="ai-insights-title">AI Weather Insights</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">💧 Humidity Analysis</div>
+                <div class="insight-text" id="humidityInsight">Analyzing humidity levels...</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">🏥 Health Tips</div>
+                <div class="insight-text" id="humidityHealth">Loading health recommendations...</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">👕 Comfort Advice</div>
+                <div class="insight-text" id="humidityComfort">Preparing comfort suggestions...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wind Speed Modal -->
+    <div class="weather-modal" id="windModal">
+        <div class="modal-header">
+            <div class="modal-title-section">
+                <div class="modal-icon">💨</div>
+                <div class="modal-title-text">
+                    <div class="modal-title">Wind Speed Details</div>
+                    <div class="modal-subtitle">Wind Conditions Analysis with AI Insights</div>
+                </div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        
+        <div class="modal-content-section">
+            <div class="ai-insights-header">
+                <div class="ai-icon">🤖</div>
+                <div class="ai-insights-title">AI Weather Insights</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">💨 Wind Analysis</div>
+                <div class="insight-text" id="windInsight">Analyzing wind conditions...</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">🚗 Travel Suggestions</div>
+                <div class="insight-text" id="windTravel">Loading travel recommendations...</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">⚠️ Safety Alerts</div>
+                <div class="insight-text" id="windSafety">Preparing safety information...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rain Chance Modal -->
+    <div class="weather-modal" id="rainModal">
+        <div class="modal-header">
+            <div class="modal-title-section">
+                <div class="modal-icon">🌧️</div>
+                <div class="modal-title-text">
+                    <div class="modal-title">Rain Chance Details</div>
+                    <div class="modal-subtitle">Precipitation Forecast with AI Insights</div>
+                </div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        
+        <div class="modal-content-section">
+            <div class="ai-insights-header">
+                <div class="ai-icon">🤖</div>
+                <div class="ai-insights-title">AI Weather Insights</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">🌧️ Rain Forecast</div>
+                <div class="insight-text" id="rainInsight">Analyzing precipitation data...</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">☂️ Preparation Tips</div>
+                <div class="insight-text" id="rainPrep">Loading preparation advice...</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">🚶 Activity Recommendations</div>
+                <div class="insight-text" id="rainActivity">Preparing activity suggestions...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sunrise & Sunset Modal -->
+    <div class="weather-modal" id="sunModal">
+        <div class="modal-header">
+            <div class="modal-title-section">
+                <div class="modal-icon">🌅</div>
+                <div class="modal-title-text">
+                    <div class="modal-title">Sunrise & Sunset Details</div>
+                    <div class="modal-subtitle">Daylight Information with AI Insights</div>
+                </div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        
+        <div class="modal-content-section">
+            <div class="ai-insights-header">
+                <div class="ai-icon">🤖</div>
+                <div class="ai-insights-title">AI Weather Insights</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">☀️ Daylight Duration</div>
+                <div class="insight-text" id="daylightInsight">Calculating daylight hours...</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">📸 Golden Hour</div>
+                <div class="insight-text" id="goldenHour">Loading photography tips...</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">🌙 Sleep Recommendations</div>
+                <div class="insight-text" id="sleepAdvice">Preparing sleep schedule advice...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Air Quality Index Modal -->
+    <div class="weather-modal" id="aqiModal">
+        <div class="modal-header">
+            <div class="modal-title-section">
+                <div class="modal-icon">🌫️</div>
+                <div class="modal-title-text">
+                    <div class="modal-title">Air Quality Index Details</div>
+                    <div class="modal-subtitle">Air Pollution Analysis with AI Insights</div>
+                </div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        
+        <div class="modal-content-section">
+            <div class="ai-insights-header">
+                <div class="ai-icon">🤖</div>
+                <div class="ai-insights-title">AI Weather Insights</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">🌫️ AQI Analysis</div>
+                <div class="insight-text" id="aqiInsight">Analyzing air quality data...</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">🏥 Health Recommendations</div>
+                <div class="insight-text" id="aqiHealth">Loading health guidelines...</div>
+            </div>
+            
+            <div class="insight-section">
+                <div class="insight-label">😷 Protection Advice</div>
+                <div class="insight-text" id="aqiProtection">Preparing protection tips...</div>
+            </div>
+        </div>
+    </div>
+
+
 </body>
 </html>

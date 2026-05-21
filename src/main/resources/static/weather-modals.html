@@ -1,0 +1,225 @@
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModal()"></div>
+
+<!-- Humidity Modal -->
+<div class="weather-modal" id="humidityModal">
+    <div class="modal-header">
+        <div class="modal-title-section">
+            <div class="modal-icon">💧</div>
+            <div class="modal-title-text">
+                <div class="modal-title">Humidity</div>
+                <div class="modal-subtitle">Moisture Level Analysis</div>
+            </div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    
+    <div class="modal-content-section">
+        <div class="modal-main-value">
+            <div class="modal-value-number" id="modalHumidityValue">
+                --<span class="modal-value-unit">%</span>
+            </div>
+            <div class="modal-value-label">Current Humidity Level</div>
+        </div>
+        
+        <div class="ai-insights-header">
+            <div class="ai-icon">🤖</div>
+            <div class="ai-insights-title">AI Weather Insights</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">💧 Humidity Analysis</div>
+            <div class="insight-text" id="humidityInsight">Analyzing humidity levels...</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">🏥 Health Tips</div>
+            <div class="insight-text" id="humidityHealth">Loading health recommendations...</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">👕 Comfort Advice</div>
+            <div class="insight-text" id="humidityComfort">Preparing comfort suggestions...</div>
+        </div>
+    </div>
+</div>
+
+<!-- Wind Speed Modal -->
+<div class="weather-modal" id="windModal">
+    <div class="modal-header">
+        <div class="modal-title-section">
+            <div class="modal-icon">💨</div>
+            <div class="modal-title-text">
+                <div class="modal-title">Wind Speed</div>
+                <div class="modal-subtitle">Wind Conditions Analysis</div>
+            </div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    
+    <div class="modal-content-section">
+        <div class="modal-main-value">
+            <div class="modal-value-number" id="modalWindValue">
+                --<span class="modal-value-unit">m/s</span>
+            </div>
+            <div class="modal-value-label">Current Wind Speed</div>
+        </div>
+        
+        <div class="ai-insights-header">
+            <div class="ai-icon">🤖</div>
+            <div class="ai-insights-title">AI Weather Insights</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">💨 Wind Analysis</div>
+            <div class="insight-text" id="windInsight">Analyzing wind conditions...</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">🚗 Travel Suggestions</div>
+            <div class="insight-text" id="windTravel">Loading travel recommendations...</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">⚠️ Safety Alerts</div>
+            <div class="insight-text" id="windSafety">Preparing safety information...</div>
+        </div>
+    </div>
+</div>
+
+<!-- Rain Chance Modal -->
+<div class="weather-modal" id="rainModal">
+    <div class="modal-header">
+        <div class="modal-title-section">
+            <div class="modal-icon">🌧️</div>
+            <div class="modal-title-text">
+                <div class="modal-title">Rain Chance</div>
+                <div class="modal-subtitle">Precipitation Forecast</div>
+            </div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    
+    <div class="modal-content-section">
+        <div class="modal-main-value">
+            <div class="modal-value-number" id="modalRainValue">
+                --<span class="modal-value-unit">%</span>
+            </div>
+            <div class="modal-value-label">Probability of Rain</div>
+        </div>
+        
+        <div class="ai-insights-header">
+            <div class="ai-icon">🤖</div>
+            <div class="ai-insights-title">AI Weather Insights</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">🌧️ Rain Forecast</div>
+            <div class="insight-text" id="rainInsight">Analyzing precipitation data...</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">☂️ Preparation Tips</div>
+            <div class="insight-text" id="rainPrep">Loading preparation advice...</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">🚶 Activity Recommendations</div>
+            <div class="insight-text" id="rainActivity">Preparing activity suggestions...</div>
+        </div>
+    </div>
+</div>
+
+<!-- Sunrise & Sunset Modal -->
+<div class="weather-modal" id="sunModal">
+    <div class="modal-header">
+        <div class="modal-title-section">
+            <div class="modal-icon">🌅</div>
+            <div class="modal-title-text">
+                <div class="modal-title">Sunrise & Sunset</div>
+                <div class="modal-subtitle">Daylight Information</div>
+            </div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    
+    <div class="modal-content-section">
+        <div class="modal-main-value">
+            <div style="display: flex; justify-content: space-around; align-items: center; gap: 30px;">
+                <div style="text-align: center;">
+                    <div style="font-size: 2em; margin-bottom: 10px;">🌅</div>
+                    <div class="modal-value-number" style="font-size: 2.5em;" id="modalSunriseValue">--:--</div>
+                    <div class="modal-value-label" style="font-size: 1em;">Sunrise</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2em; margin-bottom: 10px;">🌇</div>
+                    <div class="modal-value-number" style="font-size: 2.5em;" id="modalSunsetValue">--:--</div>
+                    <div class="modal-value-label" style="font-size: 1em;">Sunset</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ai-insights-header">
+            <div class="ai-icon">🤖</div>
+            <div class="ai-insights-title">AI Weather Insights</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">☀️ Daylight Duration</div>
+            <div class="insight-text" id="daylightInsight">Calculating daylight hours...</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">📸 Golden Hour</div>
+            <div class="insight-text" id="goldenHour">Loading photography tips...</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">🌙 Sleep Recommendations</div>
+            <div class="insight-text" id="sleepAdvice">Preparing sleep schedule advice...</div>
+        </div>
+    </div>
+</div>
+
+<!-- AQI Modal -->
+<div class="weather-modal" id="aqiModal">
+    <div class="modal-header">
+        <div class="modal-title-section">
+            <div class="modal-icon">🌫️</div>
+            <div class="modal-title-text">
+                <div class="modal-title">Air Quality Index</div>
+                <div class="modal-subtitle">Air Pollution Analysis</div>
+            </div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    
+    <div class="modal-content-section">
+        <div class="modal-main-value">
+            <div class="modal-value-number" id="modalAqiValue">
+                --<span class="modal-value-unit"> AQI</span>
+            </div>
+            <div class="modal-value-label" id="modalAqiLevel">Loading...</div>
+        </div>
+        
+        <div class="ai-insights-header">
+            <div class="ai-icon">🤖</div>
+            <div class="ai-insights-title">AI Weather Insights</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">🌫️ AQI Analysis</div>
+            <div class="insight-text" id="aqiInsight">Analyzing air quality data...</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">🏥 Health Recommendations</div>
+            <div class="insight-text" id="aqiHealth">Loading health guidelines...</div>
+        </div>
+        
+        <div class="insight-section">
+            <div class="insight-label">😷 Protection Advice</div>
+            <div class="insight-text" id="aqiProtection">Preparing protection tips...</div>
+        </div>
+    </div>
+</div>
