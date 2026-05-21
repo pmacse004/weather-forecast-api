@@ -6,6 +6,10 @@
     <title>Weather Dashboard - Live Weather Data</title>
     <!-- Favicon to prevent 404 errors -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌤️</text></svg>">
+    <!-- Google Fonts - Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,12 +18,62 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
             position: relative;
             overflow-x: hidden;
+            transition: background 1.5s ease-in-out;
+        }
+
+        /* Dynamic Weather Background Themes */
+        body.weather-clear {
+            background: linear-gradient(135deg, #56CCF2 0%, #2F80ED 50%, #667eea 100%);
+        }
+
+        body.weather-clouds {
+            background: linear-gradient(135deg, #757F9A 0%, #D7DDE8 50%, #8E9EAB 100%);
+        }
+
+        body.weather-rain {
+            background: linear-gradient(135deg, #4B79A1 0%, #283E51 50%, #1e3c72 100%);
+        }
+
+        body.weather-drizzle {
+            background: linear-gradient(135deg, #89A4C7 0%, #5B7C99 50%, #4A6FA5 100%);
+        }
+
+        body.weather-thunderstorm {
+            background: linear-gradient(135deg, #2C3E50 0%, #34495E 50%, #1a1a2e 100%);
+        }
+
+        body.weather-snow {
+            background: linear-gradient(135deg, #E0EAFC 0%, #CFDEF3 50%, #A8C0D9 100%);
+        }
+
+        body.weather-mist {
+            background: linear-gradient(135deg, #B7C9D3 0%, #8FA3B0 50%, #6B8E9E 100%);
+        }
+
+        body.weather-fog {
+            background: linear-gradient(135deg, #9BA5B0 0%, #7A8A95 50%, #5D6D7E 100%);
+        }
+
+        body.weather-haze {
+            background: linear-gradient(135deg, #D4A574 0%, #B8956A 50%, #9C8260 100%);
+        }
+
+        body.weather-dust {
+            background: linear-gradient(135deg, #C9A882 0%, #A68A64 50%, #8B7355 100%);
+        }
+
+        body.weather-hot {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 50%, #FFA94D 100%);
+        }
+
+        body.weather-cold {
+            background: linear-gradient(135deg, #A8DADC 0%, #457B9D 50%, #1D3557 100%);
         }
 
         /* Animated background particles */
@@ -30,16 +84,58 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
+            background:
                 radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
             animation: float 15s ease-in-out infinite;
             pointer-events: none;
+            transition: opacity 1s ease-in-out;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-20px); }
+        }
+
+        /* Weather-specific particle effects */
+        body.weather-rain::after,
+        body.weather-drizzle::after {
+            content: '';
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            background-image:
+                linear-gradient(transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+            background-size: 50px 100px;
+            animation: rain 1.5s linear infinite;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        @keyframes rain {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50%); }
+        }
+
+        body.weather-snow::after {
+            content: '';
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            background-image:
+                radial-gradient(circle, rgba(255, 255, 255, 0.8) 2px, transparent 2px);
+            background-size: 100px 100px;
+            animation: snow 8s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes snow {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(100%) translateX(50px); }
         }
 
         .container {
@@ -1221,177 +1317,279 @@
             display: none !important;
         }
 
-        /* Modal Backdrop - Enhanced Glassmorphism */
+        /* ========================================
+           PREMIUM MODAL STYLES - DYNAMIC GLASSMORPHISM UI
+           ======================================== */
+
+        /* CSS Custom Properties for Dynamic Themes */
+        :root {
+            /* Low Humidity Theme - Soft Blue + Cyan */
+            --low-humidity-bg-1: rgba(56, 189, 248, 0.4);
+            --low-humidity-bg-2: rgba(14, 165, 233, 0.4);
+            --low-humidity-bg-3: rgba(6, 182, 212, 0.4);
+            --low-humidity-accent: rgba(56, 189, 248, 0.6);
+            --low-humidity-glow: rgba(56, 189, 248, 0.3);
+            
+            /* Optimal Humidity Theme - Green + Teal + Light Blue */
+            --optimal-humidity-bg-1: rgba(16, 185, 129, 0.4);
+            --optimal-humidity-bg-2: rgba(20, 184, 166, 0.4);
+            --optimal-humidity-bg-3: rgba(59, 130, 246, 0.4);
+            --optimal-humidity-accent: rgba(16, 185, 129, 0.6);
+            --optimal-humidity-glow: rgba(16, 185, 129, 0.3);
+            
+            /* High Humidity Theme - Deep Blue + Indigo */
+            --high-humidity-bg-1: rgba(59, 130, 246, 0.4);
+            --high-humidity-bg-2: rgba(99, 102, 241, 0.4);
+            --high-humidity-bg-3: rgba(79, 70, 229, 0.4);
+            --high-humidity-accent: rgba(99, 102, 241, 0.6);
+            --high-humidity-glow: rgba(99, 102, 241, 0.3);
+            
+            /* Very High Humidity Theme - Dark Stormy Purple + Blue */
+            --very-high-humidity-bg-1: rgba(79, 70, 229, 0.5);
+            --very-high-humidity-bg-2: rgba(109, 40, 217, 0.5);
+            --very-high-humidity-bg-3: rgba(126, 34, 206, 0.5);
+            --very-high-humidity-accent: rgba(126, 34, 206, 0.7);
+            --very-high-humidity-glow: rgba(126, 34, 206, 0.4);
+        }
+
+        /* Modal Backdrop - Dynamic Gradient with Animation */
         .modal-backdrop {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(12px) saturate(150%);
-            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            background: linear-gradient(135deg,
+                var(--backdrop-color-1, rgba(102, 126, 234, 0.4)) 0%,
+                var(--backdrop-color-2, rgba(118, 75, 162, 0.4)) 50%,
+                var(--backdrop-color-3, rgba(142, 45, 226, 0.4)) 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite, backdropFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             z-index: 999;
             display: none;
-            animation: fadeIn 0.4s ease-out;
         }
 
         .modal-backdrop.active {
             display: block;
         }
 
-        @keyframes fadeIn {
+        @keyframes backdropFadeIn {
             from {
                 opacity: 0;
+                backdrop-filter: blur(0px);
             }
             to {
                 opacity: 1;
+                backdrop-filter: blur(20px) saturate(180%);
             }
         }
 
-        /* Modal Container - Enhanced Glassmorphism */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Modal Container - Dynamic Premium Glassmorphism */
         .weather-modal {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.7);
-            width: 90%;
-            max-width: 700px;
-            max-height: 85vh;
-            background: linear-gradient(135deg,
-                rgba(102, 126, 234, 0.95) 0%,
-                rgba(118, 75, 162, 0.95) 50%,
-                rgba(142, 45, 226, 0.95) 100%);
-            backdrop-filter: blur(40px) saturate(200%);
-            -webkit-backdrop-filter: blur(40px) saturate(200%);
-            border-radius: 35px;
-            padding: 35px;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 92%;
+            max-width: 900px;
+            max-height: 90vh;
+            background: linear-gradient(145deg,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0.20) 100%);
+            backdrop-filter: blur(50px) saturate(200%);
+            -webkit-backdrop-filter: blur(50px) saturate(200%);
+            border-radius: 32px;
+            padding: 40px;
             box-shadow:
-                0 35px 100px rgba(0, 0, 0, 0.6),
-                0 15px 50px rgba(102, 126, 234, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.5);
+                0 50px 120px rgba(0, 0, 0, 0.5),
+                0 20px 60px var(--modal-shadow-color, rgba(102, 126, 234, 0.3)),
+                0 0 0 1px rgba(255, 255, 255, 0.3) inset,
+                0 0 80px var(--modal-glow-color, rgba(142, 45, 226, 0.2));
+            border: 2px solid rgba(255, 255, 255, 0.4);
             z-index: 1000;
             display: none;
             overflow-y: auto;
+            overflow-x: hidden;
             opacity: 0;
+            font-family: 'Poppins', sans-serif;
+            transition: box-shadow 0.6s ease;
         }
 
         .weather-modal.active {
             display: block;
-            animation: modalPopIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: premiumModalOpen 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
-        @keyframes modalPopIn {
+        @keyframes premiumModalOpen {
             0% {
                 opacity: 0;
-                transform: translate(-50%, -50%) scale(0.7) rotateX(20deg);
-                filter: blur(10px);
+                transform: translate(-50%, -50%) scale(0.8) translateY(30px);
+                filter: blur(15px);
+            }
+            60% {
+                transform: translate(-50%, -50%) scale(1.02) translateY(0);
             }
             100% {
                 opacity: 1;
-                transform: translate(-50%, -50%) scale(1) rotateX(0deg);
+                transform: translate(-50%, -50%) scale(1) translateY(0);
                 filter: blur(0px);
             }
         }
 
-        /* Custom Scrollbar for Modal */
+        /* Premium Custom Scrollbar */
         .weather-modal::-webkit-scrollbar {
-            width: 10px;
+            width: 12px;
         }
 
         .weather-modal::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 10px;
-            margin: 10px 0;
+            margin: 12px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .weather-modal::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3));
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.6),
+                rgba(255, 255, 255, 0.4));
             border-radius: 10px;
-            border: 2px solid transparent;
+            border: 2px solid rgba(255, 255, 255, 0.1);
             background-clip: padding-box;
+            transition: all 0.3s ease;
         }
 
         .weather-modal::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.5));
-            background-clip: padding-box;
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.8),
+                rgba(255, 255, 255, 0.6));
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
-        /* Modal Header */
+        /* Premium Modal Header */
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-            animation: slideInFromTop 0.6s ease-out 0.2s backwards;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+            animation: headerSlideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards;
+        }
+
+        @keyframes headerSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .modal-title-section {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .modal-icon {
-            font-size: 3em;
-            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.3));
-            animation: bounce 2s ease-in-out infinite;
+            font-size: 4em;
+            filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
+            animation: iconFloat 3s ease-in-out infinite;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        @keyframes iconFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-8px) rotate(-5deg);
+            }
+            75% {
+                transform: translateY(-8px) rotate(5deg);
+            }
         }
 
         .modal-title-text {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
         }
 
         .modal-title {
-            font-size: 2em;
-            font-weight: bold;
+            font-size: 2.5em;
+            font-weight: 700;
             color: white;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-            letter-spacing: 1px;
+            text-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.4),
+                0 2px 4px rgba(0, 0, 0, 0.2);
+            letter-spacing: -0.5px;
+            line-height: 1.1;
         }
 
         .modal-subtitle {
             font-size: 1.1em;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
         }
 
         .modal-close {
             background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             color: white;
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            font-size: 1.5em;
+            font-size: 1.6em;
+            font-weight: 300;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .modal-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(90deg) scale(1.1);
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.35);
+            transform: rotate(90deg) scale(1.15);
+            box-shadow:
+                0 8px 25px rgba(255, 255, 255, 0.3),
+                0 0 30px rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
         }
 
-        /* Modal Content */
+        .modal-close:active {
+            transform: rotate(90deg) scale(1.05);
+        }
+
+        /* Premium Modal Content */
         .modal-content-section {
-            animation: fadeInUp 0.6s ease-out 0.3s backwards;
+            animation: contentFadeIn 0.8s ease-out 0.3s backwards;
+        }
+
+        @keyframes contentFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .modal-main-value {
@@ -1435,24 +1633,82 @@
             margin-top: 10px;
             font-weight: 600;
 
-        /* AI Insights Section in Modal */
+        /* ========================================
+           PREMIUM AI INSIGHTS SECTION
+           ======================================== */
         .ai-insights-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin: 25px 0 20px 0;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            animation: slideInFromTop 0.6s ease-out 0.5s backwards;
+            gap: 16px;
+            margin: 30px 0 24px 0;
+            padding: 20px 24px;
+            background: linear-gradient(135deg,
+                rgba(102, 126, 234, 0.3) 0%,
+                rgba(118, 75, 162, 0.25) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 18px;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            box-shadow:
+                0 8px 24px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: aiHeaderSlide 0.8s ease-out 0.4s backwards;
         }
 
-        @keyframes slideInFromTop {
+        @keyframes aiHeaderSlide {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(-25px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .ai-icon {
+            font-size: 2.8em;
+            animation: aiRotate 4s linear infinite;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.7));
+        }
+
+        @keyframes aiRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .ai-insights-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: white;
+            text-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.5),
+                0 1px 3px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .insight-section {
+            margin: 18px 0;
+            padding: 24px;
+            background: linear-gradient(145deg,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0.15) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 18px;
+            border-left: 4px solid rgba(255, 255, 255, 0.7);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: insightFadeIn 0.7s ease-out backwards;
+            box-shadow:
+                0 8px 24px rgba(0, 0, 0, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes insightFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -1460,101 +1716,121 @@
             }
         }
 
-        .ai-icon {
-            font-size: 2.5em;
-            animation: rotate 3s linear infinite;
-            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6));
+        .insight-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .insight-section:hover::before {
+            opacity: 1;
         }
 
-        .ai-insights-title {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: white;
-            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
-            letter-spacing: 1px;
-        }
-
-        .insight-section {
-            margin: 15px 0;
-            padding: 20px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-            backdrop-filter: blur(15px);
-            border-radius: 15px;
-            border-left: 5px solid rgba(255, 255, 255, 0.7);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: fadeInUp 0.6s ease-out backwards;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .insight-section:nth-child(2) { animation-delay: 0.6s; }
-        .insight-section:nth-child(3) { animation-delay: 0.7s; }
-        .insight-section:nth-child(4) { animation-delay: 0.8s; }
+        .insight-section:nth-child(2) { animation-delay: 0.5s; }
+        .insight-section:nth-child(3) { animation-delay: 0.6s; }
+        .insight-section:nth-child(4) { animation-delay: 0.7s; }
 
         .insight-section:hover {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
-            transform: translateX(8px) scale(1.02);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-            border-left-width: 7px;
+            background: linear-gradient(145deg,
+                rgba(255, 255, 255, 0.32) 0%,
+                rgba(255, 255, 255, 0.20) 100%);
+            transform: translateX(10px) scale(1.02);
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.28),
+                0 0 30px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            border-left-width: 6px;
         }
 
         .insight-label {
-            font-size: 1em;
-            font-weight: 800;
+            font-size: 1.05em;
+            font-weight: 700;
             color: white;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1.2px;
+            text-shadow:
+                0 2px 6px rgba(0, 0, 0, 0.4),
+                0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         .insight-text {
-            font-size: 1em;
-            color: rgba(255, 255, 255, 0.95);
-            line-height: 1.7;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+            font-size: 1.02em;
+            color: rgba(255, 255, 255, 0.98);
+            line-height: 1.8;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+            font-weight: 400;
         }
 
         .status-badge {
             display: inline-block;
-            padding: 8px 18px;
-            border-radius: 25px;
-            font-size: 0.85em;
-            font-weight: 800;
-            margin-top: 12px;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-size: 0.88em;
+            font-weight: 700;
+            margin-top: 14px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            animation: fadeIn 0.6s ease-out;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1.2px;
+            animation: badgePulse 0.8s ease-out;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        }
+
+        @keyframes badgePulse {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .status-good {
-            background: linear-gradient(135deg, rgba(76, 175, 80, 0.5), rgba(56, 142, 60, 0.4));
-            border: 2px solid rgba(76, 175, 80, 0.8);
+            background: linear-gradient(135deg,
+                rgba(76, 175, 80, 0.6) 0%,
+                rgba(56, 142, 60, 0.5) 100%);
+            border: 2px solid rgba(76, 175, 80, 0.9);
             color: #e8f5e9;
-            box-shadow: 0 4px 20px rgba(76, 175, 80, 0.4);
+            box-shadow:
+                0 6px 24px rgba(76, 175, 80, 0.5),
+                0 0 20px rgba(76, 175, 80, 0.3);
         }
 
         .status-moderate {
-            background: linear-gradient(135deg, rgba(255, 193, 7, 0.5), rgba(255, 160, 0, 0.4));
-            border: 2px solid rgba(255, 193, 7, 0.8);
+            background: linear-gradient(135deg,
+                rgba(255, 193, 7, 0.6) 0%,
+                rgba(255, 160, 0, 0.5) 100%);
+            border: 2px solid rgba(255, 193, 7, 0.9);
             color: #fffde7;
-            box-shadow: 0 4px 20px rgba(255, 193, 7, 0.4);
+            box-shadow:
+                0 6px 24px rgba(255, 193, 7, 0.5),
+                0 0 20px rgba(255, 193, 7, 0.3);
         }
 
         .status-poor {
-            background: linear-gradient(135deg, rgba(244, 67, 54, 0.5), rgba(211, 47, 47, 0.4));
-            border: 2px solid rgba(244, 67, 54, 0.8);
+            background: linear-gradient(135deg,
+                rgba(244, 67, 54, 0.6) 0%,
+                rgba(211, 47, 47, 0.5) 100%);
+            border: 2px solid rgba(244, 67, 54, 0.9);
             color: #ffebee;
-            box-shadow: 0 4px 20px rgba(244, 67, 54, 0.4);
+            box-shadow:
+                0 6px 24px rgba(244, 67, 54, 0.5),
+                0 0 20px rgba(244, 67, 54, 0.3);
         }
 
         /* Responsive Modal */
@@ -1581,6 +1857,512 @@
             .insight-section {
                 padding: 15px;
             }
+        /* Enhanced Humidity Modal Styles */
+        
+        /* ========================================
+           PREMIUM METRICS GRID
+           ======================================== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 18px;
+            margin-bottom: 35px;
+            animation: metricsSlideIn 0.8s ease-out 0.3s backwards;
+        }
+
+        @keyframes metricsSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .metric-card {
+            background: linear-gradient(145deg,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0.12) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
+            padding: 24px 18px;
+            text-align: center;
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .metric-card:hover::before {
+            opacity: 1;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            background: linear-gradient(145deg,
+                rgba(255, 255, 255, 0.35) 0%,
+                rgba(255, 255, 255, 0.20) 100%);
+            box-shadow:
+                0 15px 35px rgba(0, 0, 0, 0.25),
+                0 0 30px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .metric-icon {
+            font-size: 3em;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+            animation: iconBounce 3s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-8px) scale(1.05);
+            }
+        }
+
+        .metric-card:nth-child(1) .metric-icon { animation-delay: 0s; }
+        .metric-card:nth-child(2) .metric-icon { animation-delay: 0.15s; }
+        .metric-card:nth-child(3) .metric-icon { animation-delay: 0.3s; }
+        .metric-card:nth-child(4) .metric-icon { animation-delay: 0.45s; }
+        .metric-card:nth-child(5) .metric-icon { animation-delay: 0.6s; }
+        .metric-card:nth-child(6) .metric-icon { animation-delay: 0.75s; }
+
+        .metric-value {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: white;
+            text-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.4),
+                0 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .metric-unit {
+            font-size: 0.45em;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .metric-label {
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ========================================
+           PREMIUM SECTION HEADERS
+           ======================================== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 35px 0 24px 0;
+            padding: 18px 22px;
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.22) 0%,
+                rgba(255, 255, 255, 0.12) 100%);
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            border-left: 4px solid rgba(255, 255, 255, 0.6);
+            box-shadow:
+                0 6px 18px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: sectionSlideIn 0.7s ease-out backwards;
+        }
+
+        @keyframes sectionSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .section-icon {
+            font-size: 2.2em;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+            animation: sectionIconPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes sectionIconPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: white;
+            text-shadow:
+                0 3px 8px rgba(0, 0, 0, 0.4),
+                0 1px 3px rgba(0, 0, 0, 0.2);
+            letter-spacing: 0.3px;
+        }
+
+        /* ========================================
+           PREMIUM TIPS GRID
+           ======================================== */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 30px;
+            animation: tipsSlideIn 0.8s ease-out 0.5s backwards;
+        }
+
+        @keyframes tipsSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tip-card {
+            background: linear-gradient(145deg,
+                rgba(255, 255, 255, 0.22) 0%,
+                rgba(255, 255, 255, 0.12) 100%);
+            backdrop-filter: blur(18px);
+            border-radius: 16px;
+            padding: 22px;
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow:
+                0 6px 18px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .tip-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            background: linear-gradient(145deg,
+                rgba(255, 255, 255, 0.28) 0%,
+                rgba(255, 255, 255, 0.18) 100%);
+            box-shadow:
+                0 10px 28px rgba(0, 0, 0, 0.22),
+                0 0 25px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .tip-icon {
+            font-size: 2.5em;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+            display: inline-block;
+            animation: tipIconFloat 2.5s ease-in-out infinite;
+        }
+
+        @keyframes tipIconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .tip-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow:
+                0 2px 6px rgba(0, 0, 0, 0.4),
+                0 1px 2px rgba(0, 0, 0, 0.2);
+            letter-spacing: 0.3px;
+        }
+
+        .tip-text {
+            font-size: 0.95em;
+            color: rgba(255, 255, 255, 0.97);
+            line-height: 1.6;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            font-weight: 400;
+        }
+
+        /* ========================================
+           PREMIUM RECOMMENDATIONS GRID
+           ======================================== */
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin-bottom: 30px;
+            animation: recsSlideIn 0.8s ease-out 0.6s backwards;
+        }
+
+        @keyframes recsSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .recommendation-card {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            background: linear-gradient(145deg,
+                rgba(255, 255, 255, 0.24) 0%,
+                rgba(255, 255, 255, 0.14) 100%);
+            backdrop-filter: blur(18px);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow:
+                0 6px 18px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .recommendation-card:hover {
+            transform: translateX(8px) scale(1.02);
+            background: linear-gradient(145deg,
+                rgba(255, 255, 255, 0.30) 0%,
+                rgba(255, 255, 255, 0.20) 100%);
+            box-shadow:
+                0 10px 28px rgba(0, 0, 0, 0.22),
+                0 0 25px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .rec-icon {
+            font-size: 3em;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+            flex-shrink: 0;
+            animation: recIconPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes recIconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        .rec-content {
+            flex: 1;
+        }
+
+        .rec-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            text-shadow:
+                0 2px 6px rgba(0, 0, 0, 0.4),
+                0 1px 2px rgba(0, 0, 0, 0.2);
+            letter-spacing: 0.3px;
+        }
+
+        .rec-text {
+            font-size: 0.95em;
+            color: rgba(255, 255, 255, 0.97);
+            line-height: 1.6;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            font-weight: 400;
+        }
+
+        /* ========================================
+           PREMIUM FORECAST CHART
+           ======================================== */
+        .forecast-chart-container {
+            background: linear-gradient(145deg,
+                rgba(255, 255, 255, 0.20) 0%,
+                rgba(255, 255, 255, 0.12) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 30px;
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            box-shadow:
+                0 8px 24px rgba(0, 0, 0, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: chartSlideIn 0.8s ease-out 0.7s backwards;
+        }
+
+        @keyframes chartSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .forecast-chart-container canvas {
+            max-height: 280px;
+            width: 100% !important;
+        }
+
+        /* Premium Trend Indicators */
+        .trend-indicators {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 18px;
+            animation: trendSlideIn 0.8s ease-out 0.8s backwards;
+        }
+
+        @keyframes trendSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .trend-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: linear-gradient(145deg,
+                rgba(255, 255, 255, 0.22) 0%,
+                rgba(255, 255, 255, 0.12) 100%);
+            backdrop-filter: blur(18px);
+            border-radius: 16px;
+            padding: 18px;
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow:
+                0 6px 18px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .trend-card:hover {
+            transform: scale(1.05);
+            background: linear-gradient(145deg,
+                rgba(255, 255, 255, 0.28) 0%,
+                rgba(255, 255, 255, 0.18) 100%);
+            box-shadow:
+                0 10px 28px rgba(0, 0, 0, 0.22),
+                0 0 25px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .trend-icon {
+            font-size: 2.5em;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+        }
+
+        .trend-info {
+            flex: 1;
+        }
+
+        .trend-label {
+            font-size: 0.88em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .trend-value {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: white;
+            text-shadow:
+                0 2px 6px rgba(0, 0, 0, 0.4),
+                0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Premium Responsive Design */
+        @media (max-width: 768px) {
+            .weather-modal {
+                width: 96%;
+                padding: 28px 20px;
+                border-radius: 28px;
+            }
+
+            .modal-title {
+                font-size: 2em;
+            }
+
+            .modal-icon {
+                font-size: 3.2em;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .recommendations-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .trend-indicators {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .metric-value {
+                font-size: 1.8em;
+            }
+
+            .metric-icon {
+                font-size: 2em;
+            }
+
+            .section-title {
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         }
         }
 
@@ -2174,6 +2956,9 @@
             document.getElementById('rainChanceValue').innerHTML =
                 `${data.chanceOfRain}<span class="card-unit">%</span>`;
 
+            // Apply dynamic background based on weather
+            applyWeatherBackground(data);
+
             // Display smart weather summary
             displayWeatherSummary(data);
 
@@ -2207,6 +2992,48 @@
             document.getElementById('weatherContainer').style.display = 'block';
             // Generate AI insights for flip cards
             generateAIInsights(data);
+        }
+
+        // Apply Dynamic Background Based on Weather Conditions
+        function applyWeatherBackground(data) {
+            const body = document.body;
+            const weatherDesc = data.weatherDescription.toLowerCase();
+            const temp = data.temperature;
+            
+            // Remove all weather classes
+            body.className = body.className.replace(/weather-\w+/g, '').trim();
+            
+            // Apply weather-specific background
+            if (weatherDesc.includes('clear') || weatherDesc.includes('sunny')) {
+                body.classList.add('weather-clear');
+            } else if (weatherDesc.includes('cloud') || weatherDesc.includes('overcast')) {
+                body.classList.add('weather-clouds');
+            } else if (weatherDesc.includes('rain') && !weatherDesc.includes('drizzle')) {
+                body.classList.add('weather-rain');
+            } else if (weatherDesc.includes('drizzle')) {
+                body.classList.add('weather-drizzle');
+            } else if (weatherDesc.includes('thunder') || weatherDesc.includes('storm')) {
+                body.classList.add('weather-thunderstorm');
+            } else if (weatherDesc.includes('snow')) {
+                body.classList.add('weather-snow');
+            } else if (weatherDesc.includes('mist')) {
+                body.classList.add('weather-mist');
+            } else if (weatherDesc.includes('fog')) {
+                body.classList.add('weather-fog');
+            } else if (weatherDesc.includes('haze')) {
+                body.classList.add('weather-haze');
+            } else if (weatherDesc.includes('dust') || weatherDesc.includes('sand')) {
+                body.classList.add('weather-dust');
+            }
+            
+            // Temperature-based overrides
+            if (temp > 35) {
+                body.classList.add('weather-hot');
+            } else if (temp < 5) {
+                body.classList.add('weather-cold');
+            }
+            
+            console.log('Applied weather background:', body.className);
         }
 
         function displayWeatherSummary(data) {
@@ -2777,55 +3604,31 @@
             generateAQIInsights(aqi);
         }
 
+        // Old generateHumidityInsights function removed - now using populateHumidityInsights for modal
         function generateHumidityInsights(humidity, temp) {
+            // This function is kept for backward compatibility with the main dashboard
+            // It only updates the insight text in the main weather cards, not the modal
             let analysis = '';
-            let health = '';
-            let comfort = '';
-            let indoor = '';
-            let outdoor = '';
             let statusClass = '';
 
             if (humidity < 30) {
                 analysis = `Low humidity at ${humidity}%. The air is quite dry, which can cause discomfort and static electricity.`;
-                health = '💧 Stay hydrated! Drink plenty of water. Use a humidifier indoors. Apply moisturizer to prevent dry skin.';
-                comfort = '🏠 Indoor plants can help increase humidity. Keep a water bowl near heaters. Use lip balm frequently.';
-                indoor = '🏠 Use a humidifier to add moisture. Place water bowls near radiators. Keep houseplants to naturally increase humidity. Avoid overheating rooms.';
-                outdoor = '🌳 Wear sunscreen and lip balm. Carry a water bottle. Limit time in direct sun. Moisturize exposed skin frequently.';
                 statusClass = 'status-moderate';
             } else if (humidity >= 30 && humidity <= 60) {
                 analysis = `Optimal humidity at ${humidity}%. Perfect conditions for comfort and health. The air quality feels just right.`;
-                health = '✅ Ideal conditions! No special precautions needed. Great for outdoor activities and exercise.';
-                comfort = '😊 Perfect comfort level. Enjoy your day without humidity concerns. Great for all activities.';
-                indoor = '✅ Perfect indoor conditions! No adjustments needed. Maintain current ventilation. Ideal for work and relaxation.';
-                outdoor = '🌞 Excellent outdoor conditions! Perfect for exercise, sports, and leisure activities. Enjoy the comfortable weather!';
                 statusClass = 'status-good';
             } else if (humidity > 60 && humidity <= 80) {
                 analysis = `High humidity at ${humidity}%. The air feels heavy and muggy. You may experience discomfort.`;
-                health = '🌡️ Stay cool and hydrated. Avoid strenuous outdoor activities. Use air conditioning if available.';
-                comfort = '👕 Wear light, breathable fabrics. Take frequent breaks in shade. Use dehumidifiers indoors.';
-                indoor = '❄️ Use air conditioning or dehumidifier. Improve ventilation. Avoid cooking that adds moisture. Use exhaust fans.';
-                outdoor = '🌳 Seek shade frequently. Wear moisture-wicking clothing. Take breaks in air-conditioned spaces. Avoid peak heat hours.';
                 statusClass = 'status-moderate';
             } else {
                 analysis = `Very high humidity at ${humidity}%. Extremely uncomfortable conditions. Heat index feels much higher.`;
-                health = '⚠️ High risk of heat exhaustion! Stay indoors. Drink water constantly. Avoid physical exertion.';
-                comfort = '🏠 Stay in air-conditioned spaces. Wear minimal, loose clothing. Take cool showers frequently.';
-                indoor = '🏠 Stay indoors with AC. Use dehumidifiers. Avoid heat-generating activities. Keep curtains closed during day.';
-                outdoor = '⚠️ Minimize outdoor time! High heat stress risk. If outside, stay in shade, hydrate constantly, watch for heat illness signs.';
                 statusClass = 'status-poor';
             }
 
-            document.getElementById('humidityInsight').innerHTML =
-                `${analysis}<span class="status-badge ${statusClass}">Humidity: ${humidity}%</span>`;
-            document.getElementById('humidityHealth').textContent = health;
-            document.getElementById('humidityComfort').textContent = comfort;
-            
-            // Update modal-specific elements if they exist
-            if (document.getElementById('humidityIndoor')) {
-                document.getElementById('humidityIndoor').textContent = indoor;
-            }
-            if (document.getElementById('humidityOutdoor')) {
-                document.getElementById('humidityOutdoor').textContent = outdoor;
+            // Only update if the element exists (for main dashboard cards)
+            const insightElement = document.getElementById('humidityInsight');
+            if (insightElement) {
+                insightElement.innerHTML = `${analysis}<span class="status-badge ${statusClass}">Humidity: ${humidity}%</span>`;
             }
         }
 
@@ -3232,40 +4035,471 @@
             const tempText = document.getElementById('mainTemp').textContent.replace('°C', '').trim();
             const currentTemp = parseFloat(tempText);
             
-            // Humidity Analysis
+            // Apply dynamic theme based on humidity level
+            applyHumidityTheme(humidityVal);
+            
+            // Calculate derived metrics
+            const feelsLike = calculateFeelsLike(currentTemp, humidityVal);
+            const dewPoint = calculateDewPoint(currentTemp, humidityVal);
+            const comfortLevel = getComfortLevel(humidityVal);
+            const skinRisk = getSkinDrynessRisk(humidityVal);
+            const airQualityImpact = getIndoorAirQualityImpact(humidityVal);
+            
+            // Populate metrics cards
+            document.getElementById('modalHumidityValue').innerHTML = `${humidityVal}<span class="metric-unit">%</span>`;
+            document.getElementById('modalFeelsLike').innerHTML = `${feelsLike}<span class="metric-unit">°C</span>`;
+            document.getElementById('modalDewPoint').innerHTML = `${dewPoint}<span class="metric-unit">°C</span>`;
+            document.getElementById('modalComfortLevel').textContent = comfortLevel;
+            document.getElementById('modalSkinRisk').textContent = skinRisk;
+            document.getElementById('modalAirQuality').textContent = airQualityImpact;
+            
+            // AI Humidity Analysis with status badge
             let analysis = '';
+            let statusClass = '';
             if (humidityVal < 30) {
-                analysis = '🌵 Very dry conditions detected. The air lacks moisture, which may cause discomfort.';
+                analysis = `🌵 Very dry conditions at ${humidityVal}%. The air lacks moisture, which can cause discomfort, static electricity, and respiratory irritation. Ideal for preventing mold but challenging for comfort.`;
+                statusClass = 'status-moderate';
             } else if (humidityVal <= 60) {
-                analysis = '✅ Optimal humidity levels! The air moisture is in the comfortable range for most activities.';
+                analysis = `✅ Optimal humidity at ${humidityVal}%! The air moisture is in the perfect range for human comfort and health. This is the ideal condition for indoor and outdoor activities.`;
+                statusClass = 'status-good';
             } else if (humidityVal <= 80) {
-                analysis = '💧 High humidity detected. The air feels heavy and may cause discomfort during physical activities.';
+                analysis = `💧 High humidity at ${humidityVal}%. The air feels heavy and muggy, making it harder for your body to cool down through perspiration. Physical activities may feel more strenuous.`;
+                statusClass = 'status-moderate';
             } else {
-                analysis = '🌊 Very high humidity! The air is saturated with moisture, making it feel much warmer than actual temperature.';
+                analysis = `🌊 Very high humidity at ${humidityVal}%! The air is saturated with moisture, making it feel much warmer than the actual temperature. High risk of heat-related illnesses and mold growth.`;
+                statusClass = 'status-poor';
             }
-            document.getElementById('humidityInsight').textContent = analysis;
+            document.getElementById('humidityInsight').innerHTML = `${analysis}<span class="status-badge ${statusClass}">Humidity: ${humidityVal}%</span>`;
             
-            // Health Tips
-            let health = '';
-            if (humidityVal < 30) {
-                health = '💊 Stay hydrated! Drink plenty of water. Use moisturizer for skin. Consider using a humidifier indoors.';
-            } else if (humidityVal <= 60) {
-                health = '😊 Perfect conditions for outdoor activities! Maintain regular hydration and enjoy the comfortable weather.';
-            } else {
-                health = '⚠️ High humidity can strain cardiovascular system. Take frequent breaks, stay in shade, and avoid strenuous activities during peak hours.';
-            }
-            document.getElementById('humidityHealth').textContent = health;
+            // Health & Comfort Tips
+            populateHealthTips(humidityVal, currentTemp);
             
-            // Comfort Advice
-            let comfort = '';
-            if (humidityVal < 30) {
-                comfort = '👕 Wear breathable fabrics. Keep lip balm handy. Indoor plants can help add moisture to the air.';
-            } else if (humidityVal <= 60) {
-                comfort = '👍 Comfortable conditions! Light, breathable clothing recommended. Perfect for all types of activities.';
+            // Smart Recommendations
+            populateSmartRecommendations(humidityVal, currentTemp);
+            
+            // Humidity Trend and Risk
+            populateHumidityTrend(humidityVal);
+            
+            // Generate humidity forecast chart
+            generateHumidityForecastChart(humidityVal);
+        }
+
+        // Dynamic Theme Application Based on Humidity Level
+        function applyHumidityTheme(humidity) {
+            const backdrop = document.getElementById('modalBackdrop');
+            const modal = document.getElementById('humidityModal');
+            const root = document.documentElement;
+            
+            let theme = {};
+            
+            if (humidity < 30) {
+                // Low Humidity - Soft Blue + Cyan (Airy, Cool Feel)
+                theme = {
+                    backdropColor1: 'rgba(56, 189, 248, 0.4)',
+                    backdropColor2: 'rgba(14, 165, 233, 0.4)',
+                    backdropColor3: 'rgba(6, 182, 212, 0.4)',
+                    modalShadow: 'rgba(56, 189, 248, 0.3)',
+                    modalGlow: 'rgba(56, 189, 248, 0.25)',
+                    cardAccent: 'rgba(56, 189, 248, 0.15)',
+                    cardGlow: 'rgba(56, 189, 248, 0.4)',
+                    iconGlow: 'rgba(56, 189, 248, 0.5)',
+                    valueGlow: 'rgba(56, 189, 248, 0.3)'
+                };
+            } else if (humidity <= 60) {
+                // Optimal Humidity - Green + Teal + Light Blue (Fresh, Relaxing Feel)
+                theme = {
+                    backdropColor1: 'rgba(16, 185, 129, 0.4)',
+                    backdropColor2: 'rgba(20, 184, 166, 0.4)',
+                    backdropColor3: 'rgba(59, 130, 246, 0.4)',
+                    modalShadow: 'rgba(16, 185, 129, 0.3)',
+                    modalGlow: 'rgba(16, 185, 129, 0.25)',
+                    cardAccent: 'rgba(16, 185, 129, 0.15)',
+                    cardGlow: 'rgba(16, 185, 129, 0.4)',
+                    iconGlow: 'rgba(16, 185, 129, 0.5)',
+                    valueGlow: 'rgba(16, 185, 129, 0.3)'
+                };
+            } else if (humidity <= 80) {
+                // High Humidity - Deep Blue + Indigo (Rich, Atmospheric Feel)
+                theme = {
+                    backdropColor1: 'rgba(59, 130, 246, 0.4)',
+                    backdropColor2: 'rgba(99, 102, 241, 0.4)',
+                    backdropColor3: 'rgba(79, 70, 229, 0.4)',
+                    modalShadow: 'rgba(99, 102, 241, 0.3)',
+                    modalGlow: 'rgba(99, 102, 241, 0.25)',
+                    cardAccent: 'rgba(99, 102, 241, 0.15)',
+                    cardGlow: 'rgba(99, 102, 241, 0.4)',
+                    iconGlow: 'rgba(99, 102, 241, 0.5)',
+                    valueGlow: 'rgba(99, 102, 241, 0.3)'
+                };
             } else {
-                comfort = '🌬️ Wear light, moisture-wicking fabrics. Use fans or AC. Avoid tight clothing. Take cool showers to feel refreshed.';
+                // Very High Humidity - Dark Stormy Purple + Blue (Deep, Intense Feel)
+                theme = {
+                    backdropColor1: 'rgba(79, 70, 229, 0.5)',
+                    backdropColor2: 'rgba(109, 40, 217, 0.5)',
+                    backdropColor3: 'rgba(126, 34, 206, 0.5)',
+                    modalShadow: 'rgba(126, 34, 206, 0.35)',
+                    modalGlow: 'rgba(126, 34, 206, 0.3)',
+                    cardAccent: 'rgba(126, 34, 206, 0.2)',
+                    cardGlow: 'rgba(126, 34, 206, 0.5)',
+                    iconGlow: 'rgba(126, 34, 206, 0.6)',
+                    valueGlow: 'rgba(126, 34, 206, 0.4)'
+                };
             }
-            document.getElementById('humidityComfort').textContent = comfort;
+            
+            // Apply theme colors using CSS custom properties
+            root.style.setProperty('--backdrop-color-1', theme.backdropColor1);
+            root.style.setProperty('--backdrop-color-2', theme.backdropColor2);
+            root.style.setProperty('--backdrop-color-3', theme.backdropColor3);
+            root.style.setProperty('--modal-shadow-color', theme.modalShadow);
+            root.style.setProperty('--modal-glow-color', theme.modalGlow);
+            root.style.setProperty('--card-accent-color', theme.cardAccent);
+            root.style.setProperty('--card-glow-color', theme.cardGlow);
+            root.style.setProperty('--icon-glow-color', theme.iconGlow);
+            root.style.setProperty('--value-glow-color', theme.valueGlow);
+        }
+
+        function calculateFeelsLike(temp, humidity) {
+            // Simplified heat index calculation
+            if (temp < 27) return temp.toFixed(1);
+            const hi = -8.78469475556 + 1.61139411 * temp + 2.33854883889 * humidity
+                      - 0.14611605 * temp * humidity - 0.012308094 * temp * temp
+                      - 0.0164248277778 * humidity * humidity;
+            return hi.toFixed(1);
+        }
+
+        function calculateDewPoint(temp, humidity) {
+            // Magnus formula approximation
+            const a = 17.27;
+            const b = 237.7;
+            const alpha = ((a * temp) / (b + temp)) + Math.log(humidity / 100);
+            const dewPoint = (b * alpha) / (a - alpha);
+            return dewPoint.toFixed(1);
+        }
+
+        function getComfortLevel(humidity) {
+            if (humidity < 25) return 'Very Dry';
+            if (humidity < 30) return 'Dry';
+            if (humidity <= 40) return 'Good';
+            if (humidity <= 60) return 'Ideal';
+            if (humidity <= 70) return 'Moderate';
+            if (humidity <= 80) return 'Humid';
+            return 'Very Humid';
+        }
+
+        function getSkinDrynessRisk(humidity) {
+            if (humidity < 30) return 'High';
+            if (humidity < 40) return 'Moderate';
+            if (humidity <= 60) return 'Low';
+            return 'Very Low';
+        }
+
+        function getIndoorAirQualityImpact(humidity) {
+            if (humidity < 30) return 'Dry Air';
+            if (humidity <= 50) return 'Excellent';
+            if (humidity <= 60) return 'Good';
+            if (humidity <= 70) return 'Fair';
+            return 'Poor';
+        }
+
+        function populateHealthTips(humidity, temp) {
+            const isDay = new Date().getHours() >= 6 && new Date().getHours() < 20;
+            
+            // Hydration tip
+            let hydration = '';
+            if (humidity < 30) {
+                hydration = 'Drink 8-10 glasses of water daily. Dry air increases water loss through breathing and skin.';
+            } else if (humidity <= 60) {
+                hydration = 'Maintain regular hydration. Drink water before feeling thirsty. 6-8 glasses recommended.';
+            } else {
+                hydration = 'Increase water intake! High humidity makes you sweat more. Drink 10-12 glasses daily.';
+            }
+            document.getElementById('hydrationTip').textContent = hydration;
+            
+            // Skin care tip
+            let skinCare = '';
+            if (humidity < 30) {
+                skinCare = 'Use rich moisturizers frequently. Apply lip balm. Consider a humidifier at night.';
+            } else if (humidity <= 60) {
+                skinCare = 'Light moisturizer is sufficient. Your skin is naturally hydrated in this range.';
+            } else {
+                skinCare = 'Use oil-free, lightweight moisturizers. Cleanse face regularly to prevent breakouts.';
+            }
+            document.getElementById('skinCareTip').textContent = skinCare;
+            
+            // Sleep comfort tip
+            let sleep = '';
+            if (humidity < 30) {
+                sleep = 'Use a humidifier in bedroom. Keep water nearby. Ideal sleep humidity: 30-50%.';
+            } else if (humidity <= 60) {
+                sleep = 'Perfect sleeping conditions! Maintain room temperature at 18-22°C for best rest.';
+            } else {
+                sleep = 'Use AC or dehumidifier. Keep room cool. High humidity disrupts sleep quality.';
+            }
+            document.getElementById('sleepTip').textContent = sleep;
+            
+            // Humidifier recommendation
+            let humidifier = '';
+            if (humidity < 30) {
+                humidifier = 'Strongly recommended! Use cool-mist humidifier. Target 40-50% humidity indoors.';
+            } else if (humidity <= 60) {
+                humidifier = 'Not needed. Current humidity is in the optimal range for indoor comfort.';
+            } else {
+                humidifier = 'Use dehumidifier instead! Remove excess moisture to prevent mold and discomfort.';
+            }
+            document.getElementById('humidifierTip').textContent = humidifier;
+            
+            // Outdoor activity tip
+            let outdoor = '';
+            if (humidity < 30) {
+                outdoor = 'Good for outdoor activities! Wear sunscreen. Carry water. Protect lips and skin.';
+            } else if (humidity <= 60) {
+                outdoor = 'Excellent conditions! Perfect for all outdoor activities, sports, and exercise.';
+            } else {
+                outdoor = `${isDay ? 'Avoid peak hours (11am-4pm)' : 'Evening activities recommended'}. Stay hydrated. Take frequent breaks.`;
+            }
+            document.getElementById('outdoorTip').textContent = outdoor;
+        }
+
+        function populateSmartRecommendations(humidity, temp) {
+            const hour = new Date().getHours();
+            const isDay = hour >= 6 && hour < 20;
+            
+            // Best time outside
+            let bestTime = '';
+            if (humidity < 30) {
+                bestTime = isDay ? 'Anytime today! Avoid midday sun. Morning (7-10am) or evening (4-7pm) ideal.' : 'Current time is good. Cooler temperatures offset dry air.';
+            } else if (humidity <= 60) {
+                bestTime = 'All day is great! This is optimal weather for any outdoor activity.';
+            } else {
+                bestTime = isDay ? 'Early morning (6-9am) or late evening (6-9pm) when humidity typically drops.' : 'Current evening time is better than daytime. Humidity feels less oppressive.';
+            }
+            document.getElementById('bestTimeRec').textContent = bestTime;
+            
+            // Clothing recommendation
+            let clothing = '';
+            if (humidity < 30) {
+                clothing = 'Breathable natural fabrics. Layer clothing. Protect skin from dry air with long sleeves.';
+            } else if (humidity <= 60) {
+                clothing = 'Comfortable casual wear. Cotton or linen recommended. No special considerations needed.';
+            } else {
+                clothing = 'Light, loose-fitting clothes. Moisture-wicking fabrics. Avoid dark colors that absorb heat.';
+            }
+            document.getElementById('clothingRec').textContent = clothing;
+            
+            // Indoor comfort
+            let indoor = '';
+            if (humidity < 30) {
+                indoor = 'Add moisture: humidifier, water bowls, indoor plants. Keep temperature moderate (20-22°C).';
+            } else if (humidity <= 60) {
+                indoor = 'Perfect indoor conditions! Maintain good ventilation. No adjustments needed.';
+            } else {
+                indoor = 'Use AC or dehumidifier. Improve ventilation. Run exhaust fans. Keep windows closed during humid hours.';
+            }
+            document.getElementById('indoorRec').textContent = indoor;
+            
+            // Activity suggestion
+            let activity = '';
+            if (humidity < 30) {
+                activity = 'Great for: Hiking, cycling, outdoor sports. Avoid: Extended sun exposure without protection.';
+            } else if (humidity <= 60) {
+                activity = 'Perfect for: All activities! Picnics, sports, gardening, beach, hiking - everything is ideal.';
+            } else {
+                activity = 'Better indoors: Shopping malls, museums, cinemas, gyms with AC. Swimming is great!';
+            }
+            document.getElementById('activityRec').textContent = activity;
+        }
+
+        function populateHumidityTrend(humidity) {
+            // Determine trend (simplified - in real app, compare with previous readings)
+            let trend = 'Stable';
+            if (humidity < 35 || humidity > 75) {
+                trend = humidity < 35 ? 'Decreasing' : 'Increasing';
+            }
+            document.getElementById('humidityTrend').textContent = trend;
+            
+            // Risk level
+            let risk = 'Low';
+            if (humidity < 25 || humidity > 80) {
+                risk = 'High';
+            } else if (humidity < 30 || humidity > 70) {
+                risk = 'Moderate';
+            }
+            document.getElementById('humidityRisk').textContent = risk;
+        }
+
+        function generateHumidityForecastChart(currentHumidity) {
+            const ctx = document.getElementById('humidityForecastChart');
+            if (!ctx) return;
+            
+            // Destroy existing chart if it exists
+            if (window.humidityChart) {
+                window.humidityChart.destroy();
+            }
+            
+            // Generate forecast data (simulated - in real app, use actual forecast data)
+            const hours = [];
+            const humidityData = [];
+            const pointColors = [];
+            const currentHour = new Date().getHours();
+            
+            for (let i = 0; i < 12; i++) {
+                const hour = (currentHour + i) % 24;
+                hours.push(`${hour.toString().padStart(2, '0')}:00`);
+                
+                // Simulate humidity variation (±10% from current)
+                const variation = (Math.random() - 0.5) * 20;
+                let humidity = currentHumidity + variation;
+                humidity = Math.max(20, Math.min(95, humidity)); // Keep in realistic range
+                humidityData.push(humidity.toFixed(1));
+                
+                // Dynamic point colors based on humidity level
+                if (humidity < 30) {
+                    pointColors.push('rgba(56, 189, 248, 1)'); // Cyan for low
+                } else if (humidity <= 60) {
+                    pointColors.push('rgba(16, 185, 129, 1)'); // Green for optimal
+                } else if (humidity <= 80) {
+                    pointColors.push('rgba(255, 193, 7, 1)'); // Yellow/Orange for high
+                } else {
+                    pointColors.push('rgba(244, 67, 54, 1)'); // Red for very high
+                }
+            }
+            
+            // Dynamic gradient based on current humidity
+            const gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 280);
+            if (currentHumidity < 30) {
+                // Low humidity - Cyan gradient
+                gradient.addColorStop(0, 'rgba(56, 189, 248, 0.7)');
+                gradient.addColorStop(0.5, 'rgba(14, 165, 233, 0.4)');
+                gradient.addColorStop(1, 'rgba(6, 182, 212, 0.1)');
+            } else if (currentHumidity <= 60) {
+                // Optimal humidity - Green gradient
+                gradient.addColorStop(0, 'rgba(16, 185, 129, 0.7)');
+                gradient.addColorStop(0.5, 'rgba(20, 184, 166, 0.4)');
+                gradient.addColorStop(1, 'rgba(59, 130, 246, 0.1)');
+            } else if (currentHumidity <= 80) {
+                // High humidity - Blue/Indigo gradient
+                gradient.addColorStop(0, 'rgba(99, 102, 241, 0.7)');
+                gradient.addColorStop(0.5, 'rgba(79, 70, 229, 0.4)');
+                gradient.addColorStop(1, 'rgba(59, 130, 246, 0.1)');
+            } else {
+                // Very high humidity - Purple gradient
+                gradient.addColorStop(0, 'rgba(126, 34, 206, 0.8)');
+                gradient.addColorStop(0.5, 'rgba(109, 40, 217, 0.5)');
+                gradient.addColorStop(1, 'rgba(79, 70, 229, 0.1)');
+            }
+            
+            // Dynamic line color
+            let lineColor = 'rgba(255, 255, 255, 0.95)';
+            let lineGlow = 'rgba(255, 255, 255, 0.5)';
+            
+            window.humidityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [{
+                        label: 'Humidity %',
+                        data: humidityData,
+                        borderColor: lineColor,
+                        backgroundColor: gradient,
+                        borderWidth: 4,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 6,
+                        pointBackgroundColor: pointColors,
+                        pointBorderColor: 'rgba(255, 255, 255, 0.9)',
+                        pointBorderWidth: 3,
+                        pointHoverRadius: 9,
+                        pointHoverBackgroundColor: pointColors,
+                        pointHoverBorderColor: 'white',
+                        pointHoverBorderWidth: 4,
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 4,
+                        shadowBlur: 15,
+                        shadowColor: lineGlow
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            borderColor: 'rgba(255, 255, 255, 0.4)',
+                            borderWidth: 2,
+                            padding: 14,
+                            displayColors: false,
+                            titleFont: {
+                                size: 13,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 14,
+                                weight: '600'
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    const humidity = context.parsed.y;
+                                    let status = '';
+                                    if (humidity < 30) status = ' (Low)';
+                                    else if (humidity <= 60) status = ' (Optimal)';
+                                    else if (humidity <= 80) status = ' (High)';
+                                    else status = ' (Very High)';
+                                    return 'Humidity: ' + humidity + '%' + status;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 0,
+                            max: 100,
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.95)',
+                                font: {
+                                    size: 13,
+                                    weight: '600',
+                                    family: 'Poppins'
+                                },
+                                callback: function(value) {
+                                    return value + '%';
+                                },
+                                padding: 8
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.12)',
+                                drawBorder: false,
+                                lineWidth: 1.5
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.95)',
+                                font: {
+                                    size: 12,
+                                    weight: '600',
+                                    family: 'Poppins'
+                                },
+                                padding: 8
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.08)',
+                                drawBorder: false,
+                                lineWidth: 1
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
         }
 
         function populateWindInsights() {
@@ -3491,6 +4725,41 @@
         </div>
         
         <div class="modal-content-section">
+            <!-- Current Weather Metrics Grid -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">💧</div>
+                    <div class="metric-value" id="modalHumidityValue">--<span class="metric-unit">%</span></div>
+                    <div class="metric-label">Current Humidity</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🌡️</div>
+                    <div class="metric-value" id="modalFeelsLike">--<span class="metric-unit">°C</span></div>
+                    <div class="metric-label">Feels Like</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">💦</div>
+                    <div class="metric-value" id="modalDewPoint">--<span class="metric-unit">°C</span></div>
+                    <div class="metric-label">Dew Point</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">😊</div>
+                    <div class="metric-value" id="modalComfortLevel">--</div>
+                    <div class="metric-label">Comfort Level</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🧴</div>
+                    <div class="metric-value" id="modalSkinRisk">--</div>
+                    <div class="metric-label">Skin Dryness</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🏠</div>
+                    <div class="metric-value" id="modalAirQuality">--</div>
+                    <div class="metric-label">Indoor Impact</div>
+                </div>
+            </div>
+
+            <!-- AI Weather Insights -->
             <div class="ai-insights-header">
                 <div class="ai-icon">🤖</div>
                 <div class="ai-insights-title">AI Weather Insights</div>
@@ -3501,14 +4770,110 @@
                 <div class="insight-text" id="humidityInsight">Analyzing humidity levels...</div>
             </div>
             
-            <div class="insight-section">
-                <div class="insight-label">🏥 Health Tips</div>
-                <div class="insight-text" id="humidityHealth">Loading health recommendations...</div>
+            <!-- Health & Comfort Tips -->
+            <div class="section-header">
+                <div class="section-icon">🏥</div>
+                <div class="section-title">Health & Comfort Tips</div>
             </div>
             
-            <div class="insight-section">
-                <div class="insight-label">👕 Comfort Advice</div>
-                <div class="insight-text" id="humidityComfort">Preparing comfort suggestions...</div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">💧</div>
+                    <div class="tip-title">Hydration</div>
+                    <div class="tip-text" id="hydrationTip">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🧴</div>
+                    <div class="tip-title">Skin Care</div>
+                    <div class="tip-text" id="skinCareTip">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">😴</div>
+                    <div class="tip-title">Sleep Comfort</div>
+                    <div class="tip-text" id="sleepTip">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🏠</div>
+                    <div class="tip-title">Indoor Humidifier</div>
+                    <div class="tip-text" id="humidifierTip">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🏃</div>
+                    <div class="tip-title">Outdoor Activity</div>
+                    <div class="tip-text" id="outdoorTip">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Smart Recommendations -->
+            <div class="section-header">
+                <div class="section-icon">💡</div>
+                <div class="section-title">Smart Recommendations</div>
+            </div>
+            
+            <div class="recommendations-grid">
+                <div class="recommendation-card">
+                    <div class="rec-icon">⏰</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Best Time Outside</div>
+                        <div class="rec-text" id="bestTimeRec">Loading...</div>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-icon">👕</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Clothing</div>
+                        <div class="rec-text" id="clothingRec">Loading...</div>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-icon">🏠</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Indoor Comfort</div>
+                        <div class="rec-text" id="indoorRec">Loading...</div>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-icon">✈️</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Activity Suggestion</div>
+                        <div class="rec-text" id="activityRec">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hourly Humidity Forecast -->
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <div class="section-title">Hourly Humidity Forecast</div>
+            </div>
+            
+            <div class="forecast-chart-container">
+                <canvas id="humidityForecastChart"></canvas>
+            </div>
+
+            <!-- Humidity Trend Indicators -->
+            <div class="trend-indicators">
+                <div class="trend-card">
+                    <div class="trend-icon">📈</div>
+                    <div class="trend-info">
+                        <div class="trend-label">Trend</div>
+                        <div class="trend-value" id="humidityTrend">Stable</div>
+                    </div>
+                </div>
+                <div class="trend-card">
+                    <div class="trend-icon">⚠️</div>
+                    <div class="trend-info">
+                        <div class="trend-label">Risk Level</div>
+                        <div class="trend-value" id="humidityRisk">Low</div>
+                    </div>
+                </div>
+                <div class="trend-card">
+                    <div class="trend-icon">🎯</div>
+                    <div class="trend-info">
+                        <div class="trend-label">Optimal Range</div>
+                        <div class="trend-value">30-60%</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
