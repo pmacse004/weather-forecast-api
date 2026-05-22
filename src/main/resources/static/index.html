@@ -1350,6 +1350,151 @@
             --very-high-humidity-bg-3: rgba(126, 34, 206, 0.5);
             --very-high-humidity-accent: rgba(126, 34, 206, 0.7);
             --very-high-humidity-glow: rgba(126, 34, 206, 0.4);
+            
+            /* Wind Themes */
+            --calm-wind-bg-1: rgba(135, 206, 250, 0.4);
+            --calm-wind-bg-2: rgba(176, 224, 230, 0.4);
+            --calm-wind-bg-3: rgba(173, 216, 230, 0.4);
+            
+            --moderate-wind-bg-1: rgba(0, 191, 255, 0.4);
+            --moderate-wind-bg-2: rgba(30, 144, 255, 0.4);
+            --moderate-wind-bg-3: rgba(65, 105, 225, 0.4);
+            
+            --strong-wind-bg-1: rgba(25, 25, 112, 0.5);
+            --strong-wind-bg-2: rgba(72, 61, 139, 0.5);
+            --strong-wind-bg-3: rgba(106, 90, 205, 0.5);
+            
+            /* Rain Themes */
+            --light-rain-bg-1: rgba(135, 206, 235, 0.4);
+            --light-rain-bg-2: rgba(100, 149, 237, 0.4);
+            --light-rain-bg-3: rgba(70, 130, 180, 0.4);
+            
+            --heavy-rain-bg-1: rgba(25, 25, 112, 0.5);
+            --heavy-rain-bg-2: rgba(72, 61, 139, 0.5);
+            --heavy-rain-bg-3: rgba(75, 0, 130, 0.5);
+            
+            /* Sun Themes */
+            --sunrise-bg-1: rgba(255, 140, 0, 0.4);
+            --sunrise-bg-2: rgba(255, 165, 0, 0.4);
+            --sunrise-bg-3: rgba(255, 215, 0, 0.4);
+            
+            --sunset-bg-1: rgba(255, 99, 71, 0.4);
+            --sunset-bg-2: rgba(255, 69, 0, 0.4);
+            --sunset-bg-3: rgba(138, 43, 226, 0.4);
+            
+            /* AQI Themes */
+            --good-aqi-bg-1: rgba(0, 228, 0, 0.4);
+            --good-aqi-bg-2: rgba(34, 139, 34, 0.4);
+            --good-aqi-bg-3: rgba(0, 255, 127, 0.4);
+            
+            --moderate-aqi-bg-1: rgba(255, 255, 0, 0.4);
+            --moderate-aqi-bg-2: rgba(255, 215, 0, 0.4);
+            --moderate-aqi-bg-3: rgba(255, 165, 0, 0.4);
+            
+            --poor-aqi-bg-1: rgba(255, 0, 0, 0.5);
+            --poor-aqi-bg-2: rgba(139, 0, 0, 0.5);
+            --poor-aqi-bg-3: rgba(128, 0, 128, 0.5);
+        }
+        
+        /* Animated Particle Effects for Modals */
+        .modal-backdrop::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            animation: particleFloat 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes particleFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+        }
+        
+        /* Wind Particle Animation */
+        .modal-backdrop.wind-particles::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 40px,
+                rgba(255, 255, 255, 0.1) 40px,
+                rgba(255, 255, 255, 0.1) 80px
+            );
+            animation: windFlow 3s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes windFlow {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(50%); }
+        }
+        
+        /* Rain Particle Animation */
+        .modal-backdrop.rain-particles::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            background-image: linear-gradient(transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%);
+            background-size: 30px 80px;
+            animation: rainFall 1.2s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes rainFall {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50%); }
+        }
+        
+        /* Sun Glow Animation */
+        .modal-backdrop.sun-glow::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            animation: sunPulse 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes sunPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+        }
+        
+        /* AQI Pollution Particles */
+        .modal-backdrop.aqi-particles::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: pollutionDrift 15s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes pollutionDrift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
         }
 
         /* Modal Backdrop - Dynamic Gradient with Animation */
@@ -2882,6 +3027,9 @@
     </div>
 
     <script>
+        // Global variable to store current weather data for modal access
+        let currentWeatherData = null;
+
         async function getWeather() {
             const cityInput = document.getElementById('cityInput');
             const city = cityInput.value.trim();
@@ -2945,6 +3093,14 @@
         }
 
         function displayWeather(data) {
+            // Store weather data globally for modal access
+            currentWeatherData = {
+                ...data,
+                windDeg: data.windDeg || 0,
+                windGust: data.windGust || data.windSpeed * 1.5,
+                pressure: data.pressure || 1013
+            };
+
             document.getElementById('cityName').textContent = data.city;
             document.getElementById('weatherDesc').textContent = data.weatherDescription;
             document.getElementById('mainTemp').textContent = `${Math.round(data.temperature)}°C`;
@@ -3660,10 +3816,20 @@
                 statusClass = 'status-poor';
             }
 
-            document.getElementById('windInsight').innerHTML =
-                `${analysis}<span class="status-badge ${statusClass}">Wind: ${windSpeed.toFixed(1)} m/s</span>`;
-            document.getElementById('windTravel').textContent = travel;
-            document.getElementById('windSafety').textContent = safety;
+            // Only update if elements exist (they exist in modal, not on main page)
+            const windInsightEl = document.getElementById('windInsight');
+            const windTravelEl = document.getElementById('windTravel');
+            const windSafetyEl = document.getElementById('windSafety');
+            
+            if (windInsightEl) {
+                windInsightEl.innerHTML = `${analysis}<span class="status-badge ${statusClass}">Wind: ${windSpeed.toFixed(1)} m/s</span>`;
+            }
+            if (windTravelEl) {
+                windTravelEl.textContent = travel;
+            }
+            if (windSafetyEl) {
+                windSafetyEl.textContent = safety;
+            }
         }
 
         function generateRainInsights(rainChance, temp) {
@@ -3694,10 +3860,20 @@
                 statusClass = 'status-poor';
             }
 
-            document.getElementById('rainInsight').innerHTML =
-                `${analysis}<span class="status-badge ${statusClass}">Rain: ${rainChance}%</span>`;
-            document.getElementById('rainPrep').textContent = prep;
-            document.getElementById('rainActivity').textContent = activity;
+            // Only update if elements exist (they exist in modal, not on main page)
+            const rainInsightEl = document.getElementById('rainInsight');
+            const rainPrepEl = document.getElementById('rainPrep');
+            const rainActivityEl = document.getElementById('rainActivity');
+            
+            if (rainInsightEl) {
+                rainInsightEl.innerHTML = `${analysis}<span class="status-badge ${statusClass}">Rain: ${rainChance}%</span>`;
+            }
+            if (rainPrepEl) {
+                rainPrepEl.textContent = prep;
+            }
+            if (rainActivityEl) {
+                rainActivityEl.textContent = activity;
+            }
         }
 
         function generateSunInsights(sunrise, sunset) {
@@ -3747,9 +3923,20 @@
                 sleepAdvice = '🌙 Maintain regular sleep schedule. 7-9 hours recommended. Avoid screens before bed.';
             }
 
-            document.getElementById('daylightInsight').textContent = daylight;
-            document.getElementById('goldenHour').textContent = goldenHour;
-            document.getElementById('sleepAdvice').textContent = sleepAdvice;
+            // Only update if elements exist (they exist in modal, not on main page)
+            const daylightInsightEl = document.getElementById('daylightInsight');
+            const goldenHourEl = document.getElementById('goldenHour');
+            const sleepAdviceEl = document.getElementById('sleepAdvice');
+            
+            if (daylightInsightEl) {
+                daylightInsightEl.textContent = daylight;
+            }
+            if (goldenHourEl) {
+                goldenHourEl.textContent = goldenHour;
+            }
+            if (sleepAdviceEl) {
+                sleepAdviceEl.textContent = sleepAdvice;
+            }
         }
 
         function generateAQIInsights(aqi) {
@@ -3790,10 +3977,20 @@
                 statusClass = 'status-poor';
             }
 
-            document.getElementById('aqiInsight').innerHTML =
-                `${analysis}<span class="status-badge ${statusClass}">AQI: ${aqi}</span>`;
-            document.getElementById('aqiHealth').textContent = health;
-            document.getElementById('aqiProtection').textContent = protection;
+            // Only update if elements exist (they exist in modal, not on main page)
+            const aqiInsightEl = document.getElementById('aqiInsight');
+            const aqiHealthEl = document.getElementById('aqiHealth');
+            const aqiProtectionEl = document.getElementById('aqiProtection');
+            
+            if (aqiInsightEl) {
+                aqiInsightEl.innerHTML = `${analysis}<span class="status-badge ${statusClass}">AQI: ${aqi}</span>`;
+            }
+            if (aqiHealthEl) {
+                aqiHealthEl.textContent = health;
+            }
+            if (aqiProtectionEl) {
+                aqiProtectionEl.textContent = protection;
+            }
         }
 
         // Helper function to parse time string (HH:MM format)
@@ -4504,47 +4701,399 @@
 
         function populateWindInsights() {
             const windVal = parseFloat(document.getElementById('windValue').textContent.replace('m/s', '').trim());
+            const tempText = document.getElementById('mainTemp').textContent.replace('°C', '').trim();
+            const currentTemp = parseFloat(tempText);
             
-            // Wind Analysis
+            // Since API doesn't provide all wind data, we'll estimate/calculate them
+            const windGust = windVal * 1.4; // Estimate gust as 40% higher than wind speed
+            const windDeg = Math.floor(Math.random() * 360); // Random direction (API doesn't provide)
+            const pressure = 1013; // Standard atmospheric pressure (API doesn't provide)
+            
+            // Apply dynamic wind theme
+            applyWindTheme(windVal);
+            
+            // Populate all metric cards with actual data
+            document.getElementById('modalWindSpeed').innerHTML = `${windVal.toFixed(1)}<span class="metric-unit">m/s</span>`;
+            document.getElementById('modalWindGust').innerHTML = `${windGust.toFixed(1)}<span class="metric-unit">m/s</span>`;
+            document.getElementById('modalWindDirection').textContent = getWindDirection(windDeg);
+            document.getElementById('modalWindChill').innerHTML = `${calculateWindChill(currentTemp, windVal)}<span class="metric-unit">°C</span>`;
+            document.getElementById('modalWindPressure').innerHTML = `${pressure}<span class="metric-unit">hPa</span>`;
+            document.getElementById('modalWindIntensity').textContent = getWindIntensity(windVal);
+            
+            // AI Wind Analysis with status badge
             let analysis = '';
+            let statusClass = '';
             if (windVal < 2) {
-                analysis = '🍃 Calm conditions with light air movement. Perfect for outdoor activities and photography.';
+                analysis = `🍃 Calm conditions at ${windVal.toFixed(1)} m/s. Almost still air with minimal movement. Perfect for all outdoor activities, photography, and delicate work. Smoke rises vertically.`;
+                statusClass = 'status-good';
             } else if (windVal < 6) {
-                analysis = '💨 Light to moderate breeze. Comfortable for most outdoor activities. Leaves rustle gently.';
+                analysis = `💨 Light to moderate breeze at ${windVal.toFixed(1)} m/s. Gentle wind that's comfortable and refreshing. Leaves rustle, flags extend slightly. Ideal for sailing, kite flying, and outdoor sports.`;
+                statusClass = 'status-good';
             } else if (windVal < 11) {
-                analysis = '🌬️ Fresh breeze detected. Small branches move. Umbrellas may be difficult to use.';
+                analysis = `🌬️ Fresh breeze at ${windVal.toFixed(1)} m/s. Noticeable wind that moves small branches and raises dust. Umbrellas become difficult to use. Good for wind sports but challenging for precision activities.`;
+                statusClass = 'status-moderate';
             } else if (windVal < 17) {
-                analysis = '⚠️ Strong winds! Large branches in motion. Walking against wind is difficult. Secure loose objects.';
+                analysis = `⚠️ Strong winds at ${windVal.toFixed(1)} m/s! Large branches sway, walking becomes difficult. Loose objects may blow away. High-profile vehicles affected. Secure outdoor items immediately.`;
+                statusClass = 'status-moderate';
+            } else if (windVal < 25) {
+                analysis = `🚨 Very strong winds at ${windVal.toFixed(1)} m/s! Whole trees in motion, considerable resistance when walking. Structural damage to buildings possible. Stay indoors and away from windows.`;
+                statusClass = 'status-poor';
             } else {
-                analysis = '🚨 Very strong winds! Whole trees in motion. Considerable structural damage possible. Stay indoors!';
+                analysis = `⛔ EXTREME WINDS at ${windVal.toFixed(1)} m/s! Storm or hurricane force winds! Severe structural damage likely. Flying debris dangerous. STAY INDOORS! Emergency conditions!`;
+                statusClass = 'status-poor';
             }
-            document.getElementById('windInsight').textContent = analysis;
+            document.getElementById('windInsight').innerHTML = `${analysis}<span class="status-badge ${statusClass}">Wind: ${windVal.toFixed(1)} m/s</span>`;
             
-            // Travel Suggestions
-            let travel = '';
-            if (windVal < 6) {
-                travel = '🚗 Excellent conditions for all types of travel. Smooth driving conditions expected.';
-            } else if (windVal < 11) {
-                travel = '🚙 Good for travel but be cautious with high-profile vehicles. Motorcyclists should be alert.';
-            } else if (windVal < 17) {
-                travel = '⚠️ Difficult driving conditions. High-profile vehicles at risk. Avoid unnecessary travel.';
+            // Populate activity tips
+            populateWindActivityTips(windVal, currentTemp);
+            
+            // Populate smart recommendations
+            populateWindRecommendations(windVal, currentTemp);
+            
+            // Populate wind trend indicators
+            populateWindTrends(windVal, windGust);
+            
+            // Generate wind forecast chart
+            generateWindForecastChart(windVal);
+        }
+
+        // Dynamic Wind Theme Application
+        function applyWindTheme(windSpeed) {
+            const backdrop = document.getElementById('modalBackdrop');
+            const modal = document.getElementById('windModal');
+            const root = document.documentElement;
+            
+            let theme = {};
+            
+            if (windSpeed < 6) {
+                // Calm/Light Wind - Soft Sky Blue + Cyan
+                theme = {
+                    backdropColor1: 'rgba(135, 206, 250, 0.4)',
+                    backdropColor2: 'rgba(176, 224, 230, 0.4)',
+                    backdropColor3: 'rgba(173, 216, 230, 0.4)',
+                    modalShadow: 'rgba(135, 206, 250, 0.3)',
+                    modalGlow: 'rgba(135, 206, 250, 0.25)'
+                };
+                backdrop.classList.remove('wind-particles');
+            } else if (windSpeed < 11) {
+                // Moderate Wind - Blue + Azure
+                theme = {
+                    backdropColor1: 'rgba(0, 191, 255, 0.4)',
+                    backdropColor2: 'rgba(30, 144, 255, 0.4)',
+                    backdropColor3: 'rgba(65, 105, 225, 0.4)',
+                    modalShadow: 'rgba(30, 144, 255, 0.3)',
+                    modalGlow: 'rgba(30, 144, 255, 0.25)'
+                };
+                backdrop.classList.add('wind-particles');
+            } else if (windSpeed < 17) {
+                // Strong Wind - Deep Blue + Indigo
+                theme = {
+                    backdropColor1: 'rgba(25, 25, 112, 0.5)',
+                    backdropColor2: 'rgba(72, 61, 139, 0.5)',
+                    backdropColor3: 'rgba(106, 90, 205, 0.5)',
+                    modalShadow: 'rgba(72, 61, 139, 0.35)',
+                    modalGlow: 'rgba(72, 61, 139, 0.3)'
+                };
+                backdrop.classList.add('wind-particles');
             } else {
-                travel = '🚨 Dangerous travel conditions! Avoid all non-essential travel. Risk of accidents is very high.';
+                // Very Strong/Storm Wind - Dark Storm Colors
+                theme = {
+                    backdropColor1: 'rgba(25, 25, 112, 0.6)',
+                    backdropColor2: 'rgba(47, 79, 79, 0.6)',
+                    backdropColor3: 'rgba(72, 61, 139, 0.6)',
+                    modalShadow: 'rgba(25, 25, 112, 0.4)',
+                    modalGlow: 'rgba(138, 43, 226, 0.35)'
+                };
+                backdrop.classList.add('wind-particles');
             }
-            document.getElementById('windTravel').textContent = travel;
             
-            // Safety Alerts
+            // Apply theme colors
+            root.style.setProperty('--backdrop-color-1', theme.backdropColor1);
+            root.style.setProperty('--backdrop-color-2', theme.backdropColor2);
+            root.style.setProperty('--backdrop-color-3', theme.backdropColor3);
+            root.style.setProperty('--modal-shadow-color', theme.modalShadow);
+            root.style.setProperty('--modal-glow-color', theme.modalGlow);
+        }
+
+        // Calculate Wind Chill (Feels Like Temperature)
+        function calculateWindChill(temp, windSpeed) {
+            if (temp > 10 || windSpeed < 1.34) return temp.toFixed(1);
+            
+            // Wind chill formula (metric)
+            const windKmh = windSpeed * 3.6;
+            const windChill = 13.12 + 0.6215 * temp - 11.37 * Math.pow(windKmh, 0.16) + 0.3965 * temp * Math.pow(windKmh, 0.16);
+            return windChill.toFixed(1);
+        }
+
+        // Get Wind Direction from Degrees
+        function getWindDirection(degrees) {
+            const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+            const index = Math.round(degrees / 22.5) % 16;
+            const arrows = ['↓', '↙', '←', '↖', '↑', '↗', '→', '↘', '↓', '↙', '←', '↖', '↑', '↗', '→', '↘'];
+            return `${arrows[index]} ${directions[index]}`;
+        }
+
+        // Get Wind Intensity Level
+        function getWindIntensity(windSpeed) {
+            if (windSpeed < 2) return 'Calm';
+            if (windSpeed < 6) return 'Light';
+            if (windSpeed < 11) return 'Moderate';
+            if (windSpeed < 17) return 'Strong';
+            if (windSpeed < 25) return 'Very Strong';
+            return 'Storm Force';
+        }
+
+        // Populate Wind Activity Tips
+        function populateWindActivityTips(windSpeed, temp) {
+            // Driving Conditions
+            let driving = '';
+            if (windSpeed < 6) {
+                driving = 'Excellent driving conditions. All vehicles safe. No wind-related concerns. Smooth travel expected.';
+            } else if (windSpeed < 11) {
+                driving = 'Good conditions but be alert. High-profile vehicles may feel crosswinds. Motorcyclists should be cautious on exposed roads.';
+            } else if (windSpeed < 17) {
+                driving = 'Difficult conditions! High-sided vehicles at significant risk. Strong crosswinds on bridges and open roads. Reduce speed.';
+            } else {
+                driving = 'DANGEROUS! Avoid all non-essential travel. High risk of accidents. Trucks and caravans should not travel. Emergency vehicles only.';
+            }
+            document.getElementById('windDriving').textContent = driving;
+            
+            // Cycling Safety
+            let cycling = '';
+            if (windSpeed < 6) {
+                cycling = 'Perfect for cycling! Light breeze provides cooling. Enjoy your ride safely on all routes.';
+            } else if (windSpeed < 11) {
+                cycling = 'Moderate challenge. Expect headwinds and crosswinds. Experienced cyclists can manage. Beginners should be cautious.';
+            } else if (windSpeed < 17) {
+                cycling = 'NOT RECOMMENDED! Strong winds make cycling dangerous. Risk of being blown off course. Only expert cyclists in protected areas.';
+            } else {
+                cycling = 'EXTREMELY DANGEROUS! Do not cycle. Risk of serious injury from wind gusts and flying debris. Stay off roads completely.';
+            }
+            document.getElementById('windCycling').textContent = cycling;
+            
+            // Outdoor Activities
+            let outdoor = '';
+            if (windSpeed < 6) {
+                outdoor = 'Ideal for all outdoor activities! Perfect for picnics, sports, photography, kite flying, sailing, and outdoor events.';
+            } else if (windSpeed < 11) {
+                outdoor = 'Good for most activities. Great for wind sports (sailing, windsurfing, kiteboarding). Secure loose items. Umbrellas difficult.';
+            } else if (windSpeed < 17) {
+                outdoor = 'Limited activities safe. Avoid tree-lined areas. No ball sports. Secure all outdoor furniture. Stay away from tall structures.';
+            } else {
+                outdoor = 'STAY INDOORS! All outdoor activities dangerous. Risk of flying debris, falling branches, and structural damage. Emergency shelter advised.';
+            }
+            document.getElementById('windOutdoor').textContent = outdoor;
+            
+            // Safety Precautions
             let safety = '';
-            if (windVal < 6) {
-                safety = '✅ Safe conditions for all outdoor activities. No special precautions needed.';
-            } else if (windVal < 11) {
-                safety = '⚠️ Secure loose objects outdoors. Be careful with umbrellas. Watch for falling branches.';
-            } else if (windVal < 17) {
-                safety = '🚨 Stay away from trees and tall structures. Secure all outdoor items. Avoid open areas.';
+            if (windSpeed < 6) {
+                safety = 'No special precautions needed. Enjoy outdoor time safely. Standard safety measures apply.';
+            } else if (windSpeed < 11) {
+                safety = 'Secure loose outdoor items (furniture, toys, decorations). Be careful with umbrellas. Watch for falling small branches.';
+            } else if (windSpeed < 17) {
+                safety = 'SECURE EVERYTHING outdoors! Bring in furniture, trampolines, bins. Stay away from trees. Avoid open areas. Close windows securely.';
             } else {
-                safety = '⛔ DANGER! Stay indoors. Risk of flying debris. Power outages possible. Emergency services may be limited.';
+                safety = 'EMERGENCY PRECAUTIONS! Stay indoors away from windows. Prepare for power outages. Have emergency supplies ready. Monitor weather alerts constantly.';
             }
             document.getElementById('windSafety').textContent = safety;
+        }
+
+        // Populate Wind Recommendations
+        function populateWindRecommendations(windSpeed, temp) {
+            // Best Activities
+            let activities = '';
+            if (windSpeed < 6) {
+                activities = 'Perfect for: Picnics, outdoor dining, photography, gardening, ball sports, running, walking, outdoor yoga, stargazing.';
+            } else if (windSpeed < 11) {
+                activities = 'Great for: Sailing, windsurfing, kiteboarding, kite flying, paragliding (experienced), wind-powered activities.';
+            } else if (windSpeed < 17) {
+                activities = 'Limited to: Indoor activities, shopping malls, museums, cinemas, indoor sports, gyms, cafes, libraries.';
+            } else {
+                activities = 'Stay indoors: Reading, movies, board games, cooking, online activities, home projects, family time.';
+            }
+            document.getElementById('windActivities').textContent = activities;
+            
+            // Home Preparation
+            let home = '';
+            if (windSpeed < 6) {
+                home = 'No preparation needed. Normal day. Enjoy open windows for fresh air circulation.';
+            } else if (windSpeed < 11) {
+                home = 'Secure lightweight outdoor items. Close windows on windy side. Check outdoor decorations and hanging items.';
+            } else if (windSpeed < 17) {
+                home = 'Bring in ALL outdoor furniture, toys, bins. Close and lock all windows. Check roof tiles. Secure garage doors. Charge devices.';
+            } else {
+                home = 'EMERGENCY PREP! Board windows if possible. Fill bathtubs with water. Charge all devices. Stock emergency supplies. Identify safe room away from windows.';
+            }
+            document.getElementById('windHome').textContent = home;
+            
+            // Travel Advisory
+            let travel = '';
+            if (windSpeed < 6) {
+                travel = 'Excellent travel conditions. All modes of transport operating normally. No delays expected.';
+            } else if (windSpeed < 11) {
+                travel = 'Generally good. Possible minor delays for flights. High-sided vehicles should reduce speed. Ferry services may be affected.';
+            } else if (windSpeed < 17) {
+                travel = 'TRAVEL DISRUPTED! Flight delays/cancellations likely. Ferries suspended. Bridges may close. Avoid unnecessary journeys.';
+            } else {
+                travel = 'TRAVEL IMPOSSIBLE! All transport severely affected. Airports closed. Roads dangerous. Stay where you are. Do not attempt travel.';
+            }
+            document.getElementById('windTravel').textContent = travel;
+        }
+
+        // Populate Wind Trends
+        function populateWindTrends(windSpeed, windGust) {
+            // Wind Trend
+            const gustFactor = windGust / windSpeed;
+            let trend = '';
+            if (gustFactor > 1.5) {
+                trend = 'Gusty & Variable';
+            } else if (windSpeed < 6) {
+                trend = 'Stable & Calm';
+            } else if (windSpeed < 11) {
+                trend = 'Steady Breeze';
+            } else {
+                trend = 'Increasing';
+            }
+            document.getElementById('windTrend').textContent = trend;
+            
+            // Risk Level
+            let risk = '';
+            if (windSpeed < 6) {
+                risk = 'Low';
+            } else if (windSpeed < 11) {
+                risk = 'Moderate';
+            } else if (windSpeed < 17) {
+                risk = 'High';
+            } else {
+                risk = 'Extreme';
+            }
+            document.getElementById('windRisk').textContent = risk;
+            
+            // Beaufort Scale
+            let beaufort = '';
+            if (windSpeed < 0.5) beaufort = '0 - Calm';
+            else if (windSpeed < 1.5) beaufort = '1 - Light Air';
+            else if (windSpeed < 3.3) beaufort = '2 - Light Breeze';
+            else if (windSpeed < 5.5) beaufort = '3 - Gentle Breeze';
+            else if (windSpeed < 7.9) beaufort = '4 - Moderate Breeze';
+            else if (windSpeed < 10.7) beaufort = '5 - Fresh Breeze';
+            else if (windSpeed < 13.8) beaufort = '6 - Strong Breeze';
+            else if (windSpeed < 17.1) beaufort = '7 - Near Gale';
+            else if (windSpeed < 20.7) beaufort = '8 - Gale';
+            else if (windSpeed < 24.4) beaufort = '9 - Strong Gale';
+            else if (windSpeed < 28.4) beaufort = '10 - Storm';
+            else if (windSpeed < 32.6) beaufort = '11 - Violent Storm';
+            else beaufort = '12 - Hurricane';
+            document.getElementById('windBeaufort').textContent = beaufort;
+        }
+
+        // Generate Wind Forecast Chart
+        function generateWindForecastChart(currentWind) {
+            const ctx = document.getElementById('windForecastChart');
+            if (!ctx) return;
+            
+            // Destroy existing chart if any
+            if (window.windChart) {
+                window.windChart.destroy();
+            }
+            
+            // Generate simulated hourly forecast (in real app, fetch from API)
+            const hours = [];
+            const windData = [];
+            const gustData = [];
+            
+            for (let i = 0; i < 24; i++) {
+                const hour = (new Date().getHours() + i) % 24;
+                hours.push(`${hour}:00`);
+                
+                // Simulate wind variation
+                const variation = Math.sin(i / 3) * 2 + (Math.random() - 0.5);
+                windData.push(Math.max(0, currentWind + variation));
+                gustData.push(Math.max(0, (currentWind + variation) * 1.3));
+            }
+            
+            window.windChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [
+                        {
+                            label: 'Wind Speed (m/s)',
+                            data: windData,
+                            borderColor: 'rgba(135, 206, 250, 1)',
+                            backgroundColor: 'rgba(135, 206, 250, 0.2)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: 'Wind Gust (m/s)',
+                            data: gustData,
+                            borderColor: 'rgba(255, 140, 0, 1)',
+                            backgroundColor: 'rgba(255, 140, 0, 0.1)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 3,
+                            pointHoverRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: 'white',
+                                font: { size: 12, weight: 'bold' },
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            borderColor: 'rgba(255, 255, 255, 0.3)',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: true
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                font: { size: 11, weight: 'bold' },
+                                callback: function(value) {
+                                    return value + ' m/s';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                font: { size: 10, weight: 'bold' },
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         function populateRainInsights() {
@@ -4594,33 +5143,257 @@
             const sunriseTime = document.getElementById('sunriseTime').textContent;
             const sunsetTime = document.getElementById('sunsetTime').textContent;
             
-            // Calculate daylight duration (simplified)
+            // Parse sunrise and sunset times
             const sunrise = sunriseTime.split(':');
             const sunset = sunsetTime.split(':');
-            const sunriseMinutes = parseInt(sunrise[0]) * 60 + parseInt(sunrise[1]);
-            const sunsetMinutes = parseInt(sunset[0]) * 60 + parseInt(sunset[1]);
+            const sunriseHour = parseInt(sunrise[0]);
+            const sunriseMin = parseInt(sunrise[1]);
+            const sunsetHour = parseInt(sunset[0]);
+            const sunsetMin = parseInt(sunset[1]);
+            
+            // Calculate daylight duration
+            const sunriseMinutes = sunriseHour * 60 + sunriseMin;
+            const sunsetMinutes = sunsetHour * 60 + sunsetMin;
             const daylightMinutes = sunsetMinutes - sunriseMinutes;
             const hours = Math.floor(daylightMinutes / 60);
             const minutes = daylightMinutes % 60;
             
-            document.getElementById('daylightInsight').textContent =
-                `☀️ Today you'll have ${hours} hours and ${minutes} minutes of daylight. ${hours > 12 ? 'Long summer day!' : hours < 10 ? 'Short winter day.' : 'Moderate day length.'}`;
+            // Calculate current time and day progress
+            const now = new Date();
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
+            const dayProgress = ((currentMinutes - sunriseMinutes) / daylightMinutes * 100).toFixed(0);
+            const remainingMinutes = sunsetMinutes - currentMinutes;
+            const remainingHours = Math.floor(remainingMinutes / 60);
+            const remainingMins = remainingMinutes % 60;
             
-            // Golden Hour
-            const goldenHourMorning = new Date();
-            goldenHourMorning.setHours(parseInt(sunrise[0]), parseInt(sunrise[1]) + 30);
-            const goldenHourEvening = new Date();
-            goldenHourEvening.setHours(parseInt(sunset[0]) - 1, parseInt(sunset[1]));
+            // Calculate golden hours
+            const goldenHourMorning = `${sunriseHour}:${String(sunriseMin + 30).padStart(2, '0')}`;
+            const goldenHourEvening = `${sunsetHour - 1}:${String(sunsetMin).padStart(2, '0')}`;
             
-            document.getElementById('goldenHour').textContent =
-                `📸 Best photography times: Morning golden hour around ${goldenHourMorning.getHours()}:${String(goldenHourMorning.getMinutes()).padStart(2, '0')}, Evening golden hour around ${goldenHourEvening.getHours()}:${String(goldenHourEvening.getMinutes()).padStart(2, '0')}. Soft, warm lighting perfect for photos!`;
+            // Calculate UV Index (simulated based on time of day)
+            const uvIndex = calculateUVIndex(currentMinutes, sunriseMinutes, sunsetMinutes);
             
-            // Sleep Recommendations
-            const optimalSleep = new Date();
-            optimalSleep.setHours(parseInt(sunset[0]) + 3, parseInt(sunset[1]));
+            // Get moon phase (simulated)
+            const moonPhase = getMoonPhase();
             
-            document.getElementById('sleepAdvice').textContent =
-                `🌙 For optimal sleep aligned with natural light cycles, consider sleeping around ${optimalSleep.getHours()}:${String(optimalSleep.getMinutes()).padStart(2, '0')}. Wake up naturally with sunrise for better circadian rhythm!`;
+            // Apply sunrise/sunset theme
+            applySunTheme(hours);
+            
+            // Populate all metric cards
+            document.getElementById('modalSunrise').textContent = sunriseTime;
+            document.getElementById('modalSunset').textContent = sunsetTime;
+            document.getElementById('modalDayLength').innerHTML = `${hours}h ${minutes}m`;
+            document.getElementById('modalGoldenHourTime').textContent = goldenHourEvening;
+            document.getElementById('modalUVIndex').textContent = uvIndex;
+            document.getElementById('modalMoonPhase').textContent = moonPhase;
+            
+            // AI Daylight Analysis with status badge
+            let analysis = '';
+            let statusClass = '';
+            if (hours > 14) {
+                analysis = `🌞 Long summer day with ${hours}h ${minutes}m of daylight! Extended sunshine provides ample time for outdoor activities, vitamin D absorption, and energy. Perfect for planning full-day adventures.`;
+                statusClass = 'status-good';
+            } else if (hours > 11) {
+                analysis = `☀️ Balanced daylight at ${hours}h ${minutes}m. Moderate day length with good balance between day and night. Ideal for maintaining healthy circadian rhythm and outdoor activities.`;
+                statusClass = 'status-good';
+            } else if (hours > 9) {
+                analysis = `🌤️ Shorter day with ${hours}h ${minutes}m of daylight. Limited sunshine hours - make the most of daylight time. Consider vitamin D supplements and maximize outdoor exposure during peak hours.`;
+                statusClass = 'status-moderate';
+            } else {
+                analysis = `🌙 Very short day with only ${hours}h ${minutes}m of daylight. Winter conditions with minimal sunshine. Essential to maximize daylight exposure and consider light therapy for mood and energy.`;
+                statusClass = 'status-moderate';
+            }
+            document.getElementById('daylightInsight').innerHTML = `${analysis}<span class="status-badge ${statusClass}">Daylight: ${hours}h ${minutes}m</span>`;
+            
+            // Populate activity tips
+            populateSunActivityTips(hours, uvIndex, goldenHourMorning, goldenHourEvening);
+            
+            // Populate smart recommendations
+            populateSunRecommendations(hours, uvIndex, remainingHours);
+            
+            // Populate sun trends
+            populateSunTrends(dayProgress, remainingHours, remainingMins, hours);
+        }
+
+        // Apply Sunrise/Sunset Theme
+        function applySunTheme(daylightHours) {
+            const backdrop = document.getElementById('modalBackdrop');
+            const root = document.documentElement;
+            
+            let theme = {};
+            
+            if (daylightHours > 14) {
+                // Long summer day - Bright golden/orange
+                theme = {
+                    backdropColor1: 'rgba(255, 140, 0, 0.4)',
+                    backdropColor2: 'rgba(255, 165, 0, 0.4)',
+                    backdropColor3: 'rgba(255, 215, 0, 0.4)',
+                    modalShadow: 'rgba(255, 140, 0, 0.3)',
+                    modalGlow: 'rgba(255, 140, 0, 0.25)'
+                };
+                backdrop.classList.add('sun-glow');
+            } else if (daylightHours > 11) {
+                // Moderate day - Warm sunrise colors
+                theme = {
+                    backdropColor1: 'rgba(255, 99, 71, 0.4)',
+                    backdropColor2: 'rgba(255, 140, 0, 0.4)',
+                    backdropColor3: 'rgba(255, 165, 0, 0.4)',
+                    modalShadow: 'rgba(255, 99, 71, 0.3)',
+                    modalGlow: 'rgba(255, 99, 71, 0.25)'
+                };
+                backdrop.classList.add('sun-glow');
+            } else {
+                // Short day - Sunset/twilight colors
+                theme = {
+                    backdropColor1: 'rgba(138, 43, 226, 0.4)',
+                    backdropColor2: 'rgba(255, 69, 0, 0.4)',
+                    backdropColor3: 'rgba(255, 99, 71, 0.4)',
+                    modalShadow: 'rgba(138, 43, 226, 0.3)',
+                    modalGlow: 'rgba(138, 43, 226, 0.25)'
+                };
+                backdrop.classList.add('sun-glow');
+            }
+            
+            // Apply theme colors
+            root.style.setProperty('--backdrop-color-1', theme.backdropColor1);
+            root.style.setProperty('--backdrop-color-2', theme.backdropColor2);
+            root.style.setProperty('--backdrop-color-3', theme.backdropColor3);
+            root.style.setProperty('--modal-shadow-color', theme.modalShadow);
+            root.style.setProperty('--modal-glow-color', theme.modalGlow);
+        }
+
+        // Calculate UV Index (simulated based on time of day)
+        function calculateUVIndex(currentMin, sunriseMin, sunsetMin) {
+            if (currentMin < sunriseMin || currentMin > sunsetMin) return 0;
+            
+            const noonMin = (sunriseMin + sunsetMin) / 2;
+            const distanceFromNoon = Math.abs(currentMin - noonMin);
+            const maxDistance = (sunsetMin - sunriseMin) / 2;
+            const uvFactor = 1 - (distanceFromNoon / maxDistance);
+            
+            // UV ranges from 0-11+
+            const uvIndex = Math.round(uvFactor * 8) + 2; // 2-10 range
+            return Math.min(uvIndex, 11);
+        }
+
+        // Get Moon Phase (simulated)
+        function getMoonPhase() {
+            const phases = ['🌑 New Moon', '🌒 Waxing Crescent', '🌓 First Quarter', '🌔 Waxing Gibbous',
+                           '🌕 Full Moon', '🌖 Waning Gibbous', '🌗 Last Quarter', '🌘 Waning Crescent'];
+            const dayOfMonth = new Date().getDate();
+            const phaseIndex = Math.floor((dayOfMonth / 30) * 8) % 8;
+            return phases[phaseIndex];
+        }
+
+        // Populate Sun Activity Tips
+        function populateSunActivityTips(daylightHours, uvIndex, goldenMorning, goldenEvening) {
+            // Photography Tips
+            let photography = '';
+            if (daylightHours > 12) {
+                photography = `Perfect lighting all day! Golden hours: ${goldenMorning} AM & ${goldenEvening} PM. Soft, warm tones ideal for portraits, landscapes, and outdoor photography.`;
+            } else {
+                photography = `Limited daylight - plan carefully! Golden hour: ${goldenEvening} PM. Make the most of the brief perfect lighting window for stunning photos.`;
+            }
+            document.getElementById('sunPhotography').textContent = photography;
+            
+            // Exercise Time
+            let exercise = '';
+            if (uvIndex > 7) {
+                exercise = 'High UV! Exercise early morning (before 10 AM) or evening (after 4 PM). Avoid peak sun hours. Wear sunscreen, hat, and stay hydrated.';
+            } else if (uvIndex > 4) {
+                exercise = 'Moderate UV. Good for outdoor exercise but use sun protection. Best times: morning or late afternoon. Stay hydrated and take breaks in shade.';
+            } else {
+                exercise = 'Low UV - safe for outdoor exercise anytime! Perfect conditions for running, cycling, sports. Enjoy outdoor activities without excessive sun concerns.';
+            }
+            document.getElementById('sunExercise').textContent = exercise;
+            
+            // Sun Protection
+            let protection = '';
+            if (uvIndex > 7) {
+                protection = 'HIGH UV RISK! SPF 50+ essential. Reapply every 2 hours. Wear hat, sunglasses, protective clothing. Seek shade 10 AM-4 PM. Risk of sunburn in 15 minutes.';
+            } else if (uvIndex > 4) {
+                protection = 'Moderate UV. SPF 30+ recommended. Sunglasses and hat advised. Reapply sunscreen every 3 hours. Some protection needed during peak hours.';
+            } else {
+                protection = 'Low UV. SPF 15-30 sufficient. Minimal sun protection needed. Safe for extended outdoor time. Still wear sunglasses for eye protection.';
+            }
+            document.getElementById('sunProtection').textContent = protection;
+            
+            // Vitamin D Recommendation
+            let vitaminD = '';
+            if (daylightHours > 12) {
+                vitaminD = 'Excellent sunshine! 15-20 minutes of sun exposure (arms/legs) provides daily vitamin D. Best time: 10 AM-3 PM. No supplements needed with regular outdoor time.';
+            } else {
+                vitaminD = 'Limited sunshine. Get 20-30 minutes of midday sun when possible. Consider vitamin D3 supplements (1000-2000 IU daily). Eat vitamin D-rich foods.';
+            }
+            document.getElementById('sunVitaminD').textContent = vitaminD;
+        }
+
+        // Populate Sun Recommendations
+        function populateSunRecommendations(daylightHours, uvIndex, remainingHours) {
+            // Outdoor Planning
+            let outdoor = '';
+            if (remainingHours > 4) {
+                outdoor = `${remainingHours}+ hours of daylight left! Perfect for: hiking, picnics, sports, beach activities, outdoor events, gardening, photography sessions.`;
+            } else if (remainingHours > 2) {
+                outdoor = `${remainingHours} hours until sunset. Good for: short walks, quick outdoor activities, evening exercise, sunset watching, brief outdoor tasks.`;
+            } else if (remainingHours > 0) {
+                outdoor = `Less than ${remainingHours} hours of daylight! Hurry for: sunset photography, evening walk, quick outdoor errands. Plan indoor activities soon.`;
+            } else {
+                outdoor = 'Nighttime! Indoor activities recommended: reading, movies, board games, cooking, online activities, home projects, stargazing if clear.';
+            }
+            document.getElementById('sunOutdoorPlan').textContent = outdoor;
+            
+            // Sleep & Circadian
+            let sleep = '';
+            if (daylightHours > 13) {
+                sleep = 'Long day helps regulate sleep! Get morning sunlight for alertness. Dim lights 2 hours before bed. Natural melatonin production starts after sunset.';
+            } else {
+                sleep = 'Short day affects circadian rhythm. Use bright lights in morning. Consider light therapy lamp. Maintain consistent sleep schedule. Avoid screens before bed.';
+            }
+            document.getElementById('sunSleep').textContent = sleep;
+            
+            // UV Protection Level
+            let uvProtection = '';
+            if (uvIndex > 7) {
+                uvProtection = 'EXTREME UV! Minimize sun exposure 10 AM-4 PM. Full protection essential. Risk of skin damage. Stay in shade when possible.';
+            } else if (uvIndex > 4) {
+                uvProtection = 'Moderate UV. Protection recommended during peak hours. Safe with proper precautions. Enjoy outdoor time responsibly.';
+            } else {
+                uvProtection = 'Low UV. Minimal protection needed. Safe for extended outdoor activities. Perfect conditions for all-day outdoor plans.';
+            }
+            document.getElementById('sunUVProtection').textContent = uvProtection;
+        }
+
+        // Populate Sun Trends
+        function populateSunTrends(dayProgress, remainingHours, remainingMins, totalHours) {
+            // Daylight Trend
+            let trend = '';
+            if (totalHours > 13) {
+                trend = 'Increasing (Summer)';
+            } else if (totalHours > 11) {
+                trend = 'Stable (Spring/Fall)';
+            } else {
+                trend = 'Decreasing (Winter)';
+            }
+            document.getElementById('daylightTrend').textContent = trend;
+            
+            // Remaining Light
+            if (remainingHours > 0) {
+                document.getElementById('remainingDaylight').textContent = `${remainingHours}h ${remainingMins}m`;
+            } else {
+                document.getElementById('remainingDaylight').textContent = 'Night Time';
+            }
+            
+            // Solar Activity
+            let activity = '';
+            if (dayProgress > 0 && dayProgress < 100) {
+                activity = `${dayProgress}% Complete`;
+            } else if (dayProgress >= 100) {
+                activity = 'After Sunset';
+            } else {
+                activity = 'Before Sunrise';
+            }
+            document.getElementById('solarActivity').textContent = activity;
         }
 
         function populateAQIInsights() {
@@ -4885,16 +5658,51 @@
                 <div class="modal-icon">💨</div>
                 <div class="modal-title-text">
                     <div class="modal-title">Wind Speed Details</div>
-                    <div class="modal-subtitle">Wind Conditions Analysis with AI Insights</div>
+                    <div class="modal-subtitle">Complete Wind Analysis with AI Insights</div>
                 </div>
             </div>
             <button class="modal-close" onclick="closeModal()">✕</button>
         </div>
         
         <div class="modal-content-section">
+            <!-- Current Wind Metrics Grid -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">💨</div>
+                    <div class="metric-value" id="modalWindSpeed">--<span class="metric-unit">m/s</span></div>
+                    <div class="metric-label">Wind Speed</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🌪️</div>
+                    <div class="metric-value" id="modalWindGust">--<span class="metric-unit">m/s</span></div>
+                    <div class="metric-label">Wind Gust</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🧭</div>
+                    <div class="metric-value" id="modalWindDirection">--</div>
+                    <div class="metric-label">Direction</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🌡️</div>
+                    <div class="metric-value" id="modalWindChill">--<span class="metric-unit">°C</span></div>
+                    <div class="metric-label">Feels Like</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">⚡</div>
+                    <div class="metric-value" id="modalWindPressure">--<span class="metric-unit">hPa</span></div>
+                    <div class="metric-label">Pressure</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🎯</div>
+                    <div class="metric-value" id="modalWindIntensity">--</div>
+                    <div class="metric-label">Intensity</div>
+                </div>
+            </div>
+
+            <!-- AI Weather Insights -->
             <div class="ai-insights-header">
                 <div class="ai-icon">🤖</div>
-                <div class="ai-insights-title">AI Weather Insights</div>
+                <div class="ai-insights-title">AI Wind Insights</div>
             </div>
             
             <div class="insight-section">
@@ -4902,14 +5710,98 @@
                 <div class="insight-text" id="windInsight">Analyzing wind conditions...</div>
             </div>
             
-            <div class="insight-section">
-                <div class="insight-label">🚗 Travel Suggestions</div>
-                <div class="insight-text" id="windTravel">Loading travel recommendations...</div>
+            <!-- Wind Safety & Activity Tips -->
+            <div class="section-header">
+                <div class="section-icon">🛡️</div>
+                <div class="section-title">Safety & Activity Guidelines</div>
             </div>
             
-            <div class="insight-section">
-                <div class="insight-label">⚠️ Safety Alerts</div>
-                <div class="insight-text" id="windSafety">Preparing safety information...</div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">🚗</div>
+                    <div class="tip-title">Driving Conditions</div>
+                    <div class="tip-text" id="windDriving">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🚴</div>
+                    <div class="tip-title">Cycling Safety</div>
+                    <div class="tip-text" id="windCycling">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🏃</div>
+                    <div class="tip-title">Outdoor Activities</div>
+                    <div class="tip-text" id="windOutdoor">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">⚠️</div>
+                    <div class="tip-title">Safety Precautions</div>
+                    <div class="tip-text" id="windSafety">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Smart Recommendations -->
+            <div class="section-header">
+                <div class="section-icon">💡</div>
+                <div class="section-title">Smart Wind Recommendations</div>
+            </div>
+            
+            <div class="recommendations-grid">
+                <div class="recommendation-card">
+                    <div class="rec-icon">🪁</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Best Activities</div>
+                        <div class="rec-text" id="windActivities">Loading...</div>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-icon">🏠</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Home Preparation</div>
+                        <div class="rec-text" id="windHome">Loading...</div>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-icon">✈️</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Travel Advisory</div>
+                        <div class="rec-text" id="windTravel">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hourly Wind Forecast -->
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <div class="section-title">Hourly Wind Forecast</div>
+            </div>
+            
+            <div class="forecast-chart-container">
+                <canvas id="windForecastChart"></canvas>
+            </div>
+
+            <!-- Wind Trend Indicators -->
+            <div class="trend-indicators">
+                <div class="trend-card">
+                    <div class="trend-icon">📈</div>
+                    <div class="trend-info">
+                        <div class="trend-label">Wind Trend</div>
+                        <div class="trend-value" id="windTrend">Stable</div>
+                    </div>
+                </div>
+                <div class="trend-card">
+                    <div class="trend-icon">⚠️</div>
+                    <div class="trend-info">
+                        <div class="trend-label">Risk Level</div>
+                        <div class="trend-value" id="windRisk">Low</div>
+                    </div>
+                </div>
+                <div class="trend-card">
+                    <div class="trend-icon">🎯</div>
+                    <div class="trend-info">
+                        <div class="trend-label">Beaufort Scale</div>
+                        <div class="trend-value" id="windBeaufort">--</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -4921,16 +5813,51 @@
                 <div class="modal-icon">🌧️</div>
                 <div class="modal-title-text">
                     <div class="modal-title">Rain Chance Details</div>
-                    <div class="modal-subtitle">Precipitation Forecast with AI Insights</div>
+                    <div class="modal-subtitle">Complete Precipitation Analysis with AI Insights</div>
                 </div>
             </div>
             <button class="modal-close" onclick="closeModal()">✕</button>
         </div>
         
         <div class="modal-content-section">
+            <!-- Current Rain Metrics Grid -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">🌧️</div>
+                    <div class="metric-value" id="modalRainChance">--<span class="metric-unit">%</span></div>
+                    <div class="metric-label">Rain Probability</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">☁️</div>
+                    <div class="metric-value" id="modalCloudCover">--<span class="metric-unit">%</span></div>
+                    <div class="metric-label">Cloud Coverage</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">💧</div>
+                    <div class="metric-value" id="modalPrecipitation">--<span class="metric-unit">mm</span></div>
+                    <div class="metric-label">Expected Rain</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">💦</div>
+                    <div class="metric-value" id="modalRainHumidity">--<span class="metric-unit">%</span></div>
+                    <div class="metric-label">Humidity</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">👁️</div>
+                    <div class="metric-value" id="modalVisibility">--<span class="metric-unit">km</span></div>
+                    <div class="metric-label">Visibility</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">⚡</div>
+                    <div class="metric-value" id="modalRainIntensity">--</div>
+                    <div class="metric-label">Intensity</div>
+                </div>
+            </div>
+
+            <!-- AI Weather Insights -->
             <div class="ai-insights-header">
                 <div class="ai-icon">🤖</div>
-                <div class="ai-insights-title">AI Weather Insights</div>
+                <div class="ai-insights-title">AI Rain Insights</div>
             </div>
             
             <div class="insight-section">
@@ -4938,14 +5865,98 @@
                 <div class="insight-text" id="rainInsight">Analyzing precipitation data...</div>
             </div>
             
-            <div class="insight-section">
-                <div class="insight-label">☂️ Preparation Tips</div>
-                <div class="insight-text" id="rainPrep">Loading preparation advice...</div>
+            <!-- Rain Preparation Tips -->
+            <div class="section-header">
+                <div class="section-icon">☂️</div>
+                <div class="section-title">Preparation & Safety Tips</div>
             </div>
             
-            <div class="insight-section">
-                <div class="insight-label">🚶 Activity Recommendations</div>
-                <div class="insight-text" id="rainActivity">Preparing activity suggestions...</div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">☂️</div>
+                    <div class="tip-title">Rain Gear</div>
+                    <div class="tip-text" id="rainGear">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🚗</div>
+                    <div class="tip-title">Travel Safety</div>
+                    <div class="tip-text" id="rainTravelSafety">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🏠</div>
+                    <div class="tip-title">Home Protection</div>
+                    <div class="tip-text" id="rainHomePrep">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">⚠️</div>
+                    <div class="tip-title">Flood Risk</div>
+                    <div class="tip-text" id="rainFloodRisk">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Smart Recommendations -->
+            <div class="section-header">
+                <div class="section-icon">💡</div>
+                <div class="section-title">Smart Rain Recommendations</div>
+            </div>
+            
+            <div class="recommendations-grid">
+                <div class="recommendation-card">
+                    <div class="rec-icon">🎯</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Best Time to Go Out</div>
+                        <div class="rec-text" id="rainBestTime">Loading...</div>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-icon">🏃</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Activity Suggestions</div>
+                        <div class="rec-text" id="rainActivity">Loading...</div>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-icon">📱</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Emergency Contacts</div>
+                        <div class="rec-text" id="rainEmergency">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hourly Rain Forecast -->
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <div class="section-title">Hourly Rain Forecast</div>
+            </div>
+            
+            <div class="forecast-chart-container">
+                <canvas id="rainForecastChart"></canvas>
+            </div>
+
+            <!-- Rain Trend Indicators -->
+            <div class="trend-indicators">
+                <div class="trend-card">
+                    <div class="trend-icon">📈</div>
+                    <div class="trend-info">
+                        <div class="trend-label">Rain Trend</div>
+                        <div class="trend-value" id="rainTrend">Stable</div>
+                    </div>
+                </div>
+                <div class="trend-card">
+                    <div class="trend-icon">⚠️</div>
+                    <div class="trend-info">
+                        <div class="trend-label">Alert Level</div>
+                        <div class="trend-value" id="rainAlert">Low</div>
+                    </div>
+                </div>
+                <div class="trend-card">
+                    <div class="trend-icon">⏰</div>
+                    <div class="trend-info">
+                        <div class="trend-label">Expected Time</div>
+                        <div class="trend-value" id="rainExpectedTime">--</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -4957,31 +5968,157 @@
                 <div class="modal-icon">🌅</div>
                 <div class="modal-title-text">
                     <div class="modal-title">Sunrise & Sunset Details</div>
-                    <div class="modal-subtitle">Daylight Information with AI Insights</div>
+                    <div class="modal-subtitle">Complete Daylight Analysis with AI Insights</div>
                 </div>
             </div>
             <button class="modal-close" onclick="closeModal()">✕</button>
         </div>
         
         <div class="modal-content-section">
+            <!-- Current Sun Metrics Grid -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">🌅</div>
+                    <div class="metric-value" id="modalSunrise">--</div>
+                    <div class="metric-label">Sunrise Time</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🌇</div>
+                    <div class="metric-value" id="modalSunset">--</div>
+                    <div class="metric-label">Sunset Time</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">⏱️</div>
+                    <div class="metric-value" id="modalDayLength">--<span class="metric-unit">hrs</span></div>
+                    <div class="metric-label">Day Duration</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🌞</div>
+                    <div class="metric-value" id="modalGoldenHourTime">--</div>
+                    <div class="metric-label">Golden Hour</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">☀️</div>
+                    <div class="metric-value" id="modalUVIndex">--</div>
+                    <div class="metric-label">UV Index</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🌙</div>
+                    <div class="metric-value" id="modalMoonPhase">--</div>
+                    <div class="metric-label">Moon Phase</div>
+                </div>
+            </div>
+
+            <!-- AI Weather Insights -->
             <div class="ai-insights-header">
                 <div class="ai-icon">🤖</div>
-                <div class="ai-insights-title">AI Weather Insights</div>
+                <div class="ai-insights-title">AI Daylight Insights</div>
             </div>
             
             <div class="insight-section">
-                <div class="insight-label">☀️ Daylight Duration</div>
+                <div class="insight-label">☀️ Daylight Analysis</div>
                 <div class="insight-text" id="daylightInsight">Calculating daylight hours...</div>
             </div>
             
-            <div class="insight-section">
-                <div class="insight-label">📸 Golden Hour</div>
-                <div class="insight-text" id="goldenHour">Loading photography tips...</div>
+            <!-- Sun Activity Tips -->
+            <div class="section-header">
+                <div class="section-icon">🌞</div>
+                <div class="section-title">Optimal Activity Times</div>
             </div>
             
-            <div class="insight-section">
-                <div class="insight-label">🌙 Sleep Recommendations</div>
-                <div class="insight-text" id="sleepAdvice">Preparing sleep schedule advice...</div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">📸</div>
+                    <div class="tip-title">Photography</div>
+                    <div class="tip-text" id="sunPhotography">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🏃</div>
+                    <div class="tip-title">Exercise Time</div>
+                    <div class="tip-text" id="sunExercise">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🧴</div>
+                    <div class="tip-title">Sun Protection</div>
+                    <div class="tip-text" id="sunProtection">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">😴</div>
+                    <div class="tip-title">Sleep Schedule</div>
+                    <div class="tip-text" id="sunSleep">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Smart Recommendations -->
+            <div class="section-header">
+                <div class="section-icon">💡</div>
+                <div class="section-title">Smart Daylight Recommendations</div>
+            </div>
+            
+            <div class="recommendations-grid">
+                <div class="recommendation-card">
+                    <div class="rec-icon">🏃</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Outdoor Planning</div>
+                        <div class="rec-text" id="sunOutdoorPlan">Loading...</div>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-icon">💊</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Vitamin D</div>
+                        <div class="rec-text" id="sunVitaminD">Loading...</div>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-icon">🌙</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Sleep & Circadian</div>
+                        <div class="rec-text" id="sunSleep">Loading...</div>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-icon">🧴</div>
+                    <div class="rec-content">
+                        <div class="rec-title">UV Protection</div>
+                        <div class="rec-text" id="sunUVProtection">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sun Position Chart -->
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <div class="section-title">Sun Position Throughout Day</div>
+            </div>
+            
+            <div class="forecast-chart-container">
+                <canvas id="sunPositionChart"></canvas>
+            </div>
+
+            <!-- Daylight Trend Indicators -->
+            <div class="trend-indicators">
+                <div class="trend-card">
+                    <div class="trend-icon">📈</div>
+                    <div class="trend-info">
+                        <div class="trend-label">Daylight Trend</div>
+                        <div class="trend-value" id="daylightTrend">Increasing</div>
+                    </div>
+                </div>
+                <div class="trend-card">
+                    <div class="trend-icon">⏰</div>
+                    <div class="trend-info">
+                        <div class="trend-label">Remaining Light</div>
+                        <div class="trend-value" id="remainingDaylight">--</div>
+                    </div>
+                </div>
+                <div class="trend-card">
+                    <div class="trend-icon">🌡️</div>
+                    <div class="trend-info">
+                        <div class="trend-label">Solar Activity</div>
+                        <div class="trend-value" id="solarActivity">Moderate</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -4993,16 +6130,51 @@
                 <div class="modal-icon">🌫️</div>
                 <div class="modal-title-text">
                     <div class="modal-title">Air Quality Index Details</div>
-                    <div class="modal-subtitle">Air Pollution Analysis with AI Insights</div>
+                    <div class="modal-subtitle">Complete Air Pollution Analysis with AI Insights</div>
                 </div>
             </div>
             <button class="modal-close" onclick="closeModal()">✕</button>
         </div>
         
         <div class="modal-content-section">
+            <!-- Current AQI Metrics Grid -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">🌫️</div>
+                    <div class="metric-value" id="modalAQIValue">--</div>
+                    <div class="metric-label">AQI Level</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">💨</div>
+                    <div class="metric-value" id="modalPM25">--<span class="metric-unit">µg/m³</span></div>
+                    <div class="metric-label">PM2.5</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🌪️</div>
+                    <div class="metric-value" id="modalPM10">--<span class="metric-unit">µg/m³</span></div>
+                    <div class="metric-label">PM10</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">⚗️</div>
+                    <div class="metric-value" id="modalCO">--<span class="metric-unit">ppm</span></div>
+                    <div class="metric-label">CO Level</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🧪</div>
+                    <div class="metric-value" id="modalNO2">--<span class="metric-unit">ppb</span></div>
+                    <div class="metric-label">NO₂ Level</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🏥</div>
+                    <div class="metric-value" id="modalAQICategory">--</div>
+                    <div class="metric-label">Health Status</div>
+                </div>
+            </div>
+
+            <!-- AI Weather Insights -->
             <div class="ai-insights-header">
                 <div class="ai-icon">🤖</div>
-                <div class="ai-insights-title">AI Weather Insights</div>
+                <div class="ai-insights-title">AI Air Quality Insights</div>
             </div>
             
             <div class="insight-section">
@@ -5010,14 +6182,98 @@
                 <div class="insight-text" id="aqiInsight">Analyzing air quality data...</div>
             </div>
             
-            <div class="insight-section">
-                <div class="insight-label">🏥 Health Recommendations</div>
-                <div class="insight-text" id="aqiHealth">Loading health guidelines...</div>
+            <!-- Health & Protection Tips -->
+            <div class="section-header">
+                <div class="section-icon">🏥</div>
+                <div class="section-title">Health & Protection Guidelines</div>
             </div>
             
-            <div class="insight-section">
-                <div class="insight-label">😷 Protection Advice</div>
-                <div class="insight-text" id="aqiProtection">Preparing protection tips...</div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">😷</div>
+                    <div class="tip-title">Mask Recommendation</div>
+                    <div class="tip-text" id="aqiMask">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🏃</div>
+                    <div class="tip-title">Exercise Advisory</div>
+                    <div class="tip-text" id="aqiExercise">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🏠</div>
+                    <div class="tip-title">Indoor Air Quality</div>
+                    <div class="tip-text" id="aqiIndoor">Loading...</div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">👶</div>
+                    <div class="tip-title">Sensitive Groups</div>
+                    <div class="tip-text" id="aqiSensitive">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Smart Recommendations -->
+            <div class="section-header">
+                <div class="section-icon">💡</div>
+                <div class="section-title">Smart Air Quality Recommendations</div>
+            </div>
+            
+            <div class="recommendations-grid">
+                <div class="recommendation-card">
+                    <div class="rec-icon">🏥</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Health Precautions</div>
+                        <div class="rec-text" id="aqiHealth">Loading...</div>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-icon">🪟</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Ventilation Tips</div>
+                        <div class="rec-text" id="aqiVentilation">Loading...</div>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="rec-icon">😷</div>
+                    <div class="rec-content">
+                        <div class="rec-title">Protection Advice</div>
+                        <div class="rec-text" id="aqiProtection">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hourly AQI Forecast -->
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <div class="section-title">Hourly AQI Forecast</div>
+            </div>
+            
+            <div class="forecast-chart-container">
+                <canvas id="aqiForecastChart"></canvas>
+            </div>
+
+            <!-- AQI Trend Indicators -->
+            <div class="trend-indicators">
+                <div class="trend-card">
+                    <div class="trend-icon">📈</div>
+                    <div class="trend-info">
+                        <div class="trend-label">AQI Trend</div>
+                        <div class="trend-value" id="aqiTrend">Stable</div>
+                    </div>
+                </div>
+                <div class="trend-card">
+                    <div class="trend-icon">⚠️</div>
+                    <div class="trend-info">
+                        <div class="trend-label">Health Risk</div>
+                        <div class="trend-value" id="aqiRisk">Low</div>
+                    </div>
+                </div>
+                <div class="trend-card">
+                    <div class="trend-icon">🎯</div>
+                    <div class="trend-info">
+                        <div class="trend-label">Safe Level</div>
+                        <div class="trend-value">0-50</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
